@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Doctrine\DataFixtures;
 
-use App\Domain\Model\Factory\AuthorFactory;
+use App\Domain\Model\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -17,15 +17,15 @@ class AuthorFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $admin = AuthorFactory::createAdmin(self::ADMIN_NAME, sprintf(self::AUTHOR_EMAIL, self::ADMIN_NAME));
+        $admin = UserFactory::createAdmin(self::ADMIN_NAME, sprintf(self::AUTHOR_EMAIL, self::ADMIN_NAME));
         $manager->persist($admin);
         $this->addReference(sprintf(self::AUTHOR_REFERENCE, self::ADMIN_NAME), $admin);
 
-        $editor = AuthorFactory::createEditor(self::EDITOR_NAME, sprintf(self::AUTHOR_EMAIL, self::EDITOR_NAME));
+        $editor = UserFactory::createEditor(self::EDITOR_NAME, sprintf(self::AUTHOR_EMAIL, self::EDITOR_NAME));
         $manager->persist($editor);
         $this->addReference(sprintf(self::AUTHOR_REFERENCE, self::EDITOR_NAME), $editor);
 
-        $author = AuthorFactory::createAuthor(self::AUTHOR_NAME, sprintf(self::AUTHOR_EMAIL, self::AUTHOR_NAME));
+        $author = UserFactory::createAuthor(self::AUTHOR_NAME, sprintf(self::AUTHOR_EMAIL, self::AUTHOR_NAME));
         $manager->persist($author);
         $this->addReference(sprintf(self::AUTHOR_REFERENCE, self::AUTHOR_NAME), $author);
 

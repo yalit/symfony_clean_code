@@ -2,7 +2,7 @@
 
 namespace App\Domain\Model\Enum;
 
-enum AuthorRole: string
+enum UserRole: string
 {
     case ADMIN = 'admin';
     case EDITOR = 'editor';

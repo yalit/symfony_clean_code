@@ -2,9 +2,9 @@
 
 namespace App\Domain\Model;
 
-use App\Domain\Model\Enum\AuthorRole;
+use App\Domain\Model\Enum\UserRole;
 
-class Author
+class User
 {
     /**
      * has the following properties:
@@ -17,7 +17,7 @@ class Author
         private readonly string $id,
         private string $name,
         private string $email,
-        private AuthorRole $role
+        private UserRole $role
     ) {}
 
     public function getId():string
@@ -45,12 +45,12 @@ class Author
         $this->email = $email;
     }
 
-    public function getRole():AuthorRole
+    public function getRole():UserRole
     {
         return $this->role;
     }
 
-    public function setRole(AuthorRole $role): void
+    public function setRole(UserRole $role): void
     {
         $this->role = $role;
     }
