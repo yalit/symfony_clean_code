@@ -28,3 +28,10 @@ db-drop: ## Drop the database
 
 db-update: ## Update the database
 	${CONSOLE} doctrine:schema:update --force --env=dev
+
+## —— Testing ————————————————————————————————————————————————————————————
+tests-prepare: ## Create the database
+	${CONSOLE} doctrine:database:drop --force --env=test
+	${CONSOLE} doctrine:database:create --env=test
+	${CONSOLE} doctrine:schema:update --force --env=test
+

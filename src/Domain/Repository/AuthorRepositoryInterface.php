@@ -8,12 +8,12 @@ interface AuthorRepositoryInterface
 {
     public function save(Author $author): void;
 
-    public function findById(string $id): ?Author;
+    public function getOneById(string $id): ?Author;
 
     /**
      * @return array<Author>
      */
-    public function findAll(): array;
+    public function getAll(): array;
 
     public function delete(string $id): void;
 }

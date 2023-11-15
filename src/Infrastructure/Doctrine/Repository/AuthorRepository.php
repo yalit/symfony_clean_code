@@ -4,30 +4,37 @@ namespace App\Infrastructure\Doctrine\Repository;
 
 use App\Domain\Model\Author;
 use App\Domain\Repository\AuthorRepositoryInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class AuthorRepository implements AuthorRepositoryInterface
+class AuthorRepository extends ServiceEntityRepository implements AuthorRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Author::class);
+    }
 
     public function save(Author $author): void
     {
-        // TODO: Implement save() method.
+        $this->getEntityManager()->persist($author);
+        $this->getEntityManager()->flush();
     }
 
-    public function findById(string $id): ?Author
+    public function getOneById(string $id): ?Author
     {
-        // TODO: Implement findById() method.
+        $this->find($id);
     }
 
     /**
-     * @inheritDoc
+     * @return Author[]
      */
-    public function findAll(): array
+    public function getAll(): array
     {
-        // TODO: Implement findAll() method.
+        return $this->findAll();
     }
 
     public function delete(string $id): void
     {
-        // TODO: Implement delete() method.
+        $this->getEntityManager()->remove($this->getOneById($id));
     }
 }

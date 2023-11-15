@@ -9,6 +9,6 @@
 
         <field name="name" type="string"/>
         <field name="email" type="string" length="180" unique="true" />
-        <field name="role" type="string" />
+        <field name="role" type="string" enum-type="App\Domain\Model\Enum\AuthorRole"/>
     </entity>
 </doctrine-mapping>
