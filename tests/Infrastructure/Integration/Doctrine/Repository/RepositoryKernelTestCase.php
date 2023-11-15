@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure;
+namespace App\Tests\Infrastructure\Integration\Doctrine\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

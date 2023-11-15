@@ -4,8 +4,8 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <entity name="App\Domain\Model\Author"
-            repository-class="Infrastructure\Doctrine\Repository\AuthorRepository" table="user">
-        <id name="id" type="string" column="id" />
+            repository-class="Infrastructure\Doctrine\Repository\AuthorRepository" >
+        <id name="id" type="string" column="id" unique="true"/>
 
         <field name="name" type="string"/>
         <field name="email" type="string" length="180" unique="true" />

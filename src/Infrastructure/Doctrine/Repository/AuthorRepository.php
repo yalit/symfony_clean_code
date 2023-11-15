@@ -22,7 +22,7 @@ class AuthorRepository extends ServiceEntityRepository implements AuthorReposito
 
     public function getOneById(string $id): ?Author
     {
-        $this->find($id);
+        return $this->find($id);
     }
 
     /**
@@ -36,5 +36,6 @@ class AuthorRepository extends ServiceEntityRepository implements AuthorReposito
     public function delete(string $id): void
     {
         $this->getEntityManager()->remove($this->getOneById($id));
+        $this->getEntityManager()->flush();
     }
 }
