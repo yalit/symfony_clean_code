@@ -17,7 +17,8 @@ class User
         private readonly string $id,
         private string $name,
         private string $email,
-        private UserRole $role
+        private UserRole $role,
+        private string $password
     ) {}
 
     public function getId():string
@@ -53,5 +54,15 @@ class User
     public function setRole(UserRole $role): void
     {
         $this->role = $role;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
     }
 }

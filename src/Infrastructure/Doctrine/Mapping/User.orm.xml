@@ -10,5 +10,6 @@
         <field name="name" type="string"/>
         <field name="email" type="string" length="180" unique="true" />
         <field name="role" type="string" enum-type="App\Domain\Model\Enum\UserRole"/>
+        <field name="password" type="string" length="180" nullable="false" />
     </entity>
 </doctrine-mapping>
