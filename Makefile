@@ -20,7 +20,7 @@ down: ## Docker container down
 	${DOCKER} compose down
 
 ## —— Doctrine ————————————————————————————————————————————————————————————
-db-create: ## Create the database
+db-create: db-drop ## Create the database
 	${CONSOLE} doctrine:database:create --env=dev
 
 db-drop: ## Drop the database
@@ -29,9 +29,13 @@ db-drop: ## Drop the database
 db-update: ## Update the database
 	${CONSOLE} doctrine:schema:update --force --env=dev
 
+db-fixtures: db-create db-update ## Load fixtures into the database
+	${CONSOLE} doctrine:fixtures:load --no-interaction --env=dev
+
 ## —— Testing ————————————————————————————————————————————————————————————
-tests-prepare: ## Create the database
+tests-prepare: ## Prepare the test environment (database / fixtures)
 	${CONSOLE} doctrine:database:drop --force --env=test
 	${CONSOLE} doctrine:database:create --env=test
 	${CONSOLE} doctrine:schema:update --force --env=test
+	${CONSOLE} doctrine:fixtures:load --no-interaction --env=test
 
