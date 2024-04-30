@@ -1,7 +1,19 @@
+PHONY: tests
+
+# Inspired from https://www.strangebuzz.com/en/snippets/the-perfect-makefile-for-symfony
+USER_ID:=$(shell id -u)
+GROUP_ID:=$(shell id -g)
+
+export USER_ID
+export GROUP_ID
+
 # Alias
+PHP_CONTAINER = hexa-php
+
 DOCKER = docker
-SYMFONY =  symfony
-CONSOLE = ${SYMFONY} console
+SYMFONY =  ${DOCKER} exec -it ${PHP_CONTAINER} symfony
+CONSOLE = ${DOCKER} exec -it ${PHP_CONTAINER} bin/console
+COMPOSER = ${DOCKER} exec -it ${PHP_CONTAINER} composer
 
 VERSION := $(shell $$SHELL -c 'echo $$ZSH_VERSION')
 read_param = $(if $(2), $(shell echo $(2)), $(if $(strip $VERSION), $(shell $$SHELL -c 'read param\?"$(1) : "; echo $$param'), $(shell $$SHELL -c 'read "$(1) : " param; echo $$param')))
@@ -18,6 +30,20 @@ up: down ## Docker container up (without build)
 
 down: ## Docker container down
 	${DOCKER} compose down
+
+## —— Composer ————————————————————————————————————————————————————————————
+install: ## Install the project dependencies
+	${COMPOSER} install
+
+update: ## Update the project dependencies
+	${COMPOSER} update
+
+require: ## Require a new package
+	${COMPOSER} require $(filter-out $@,$(MAKECMDGOALS))
+
+require-dev: ## Require a new package
+	${COMPOSER} require --dev $(filter-out $@,$(MAKECMDGOALS))
+
 
 ## —— Doctrine ————————————————————————————————————————————————————————————
 db-create: db-drop ## Create the database
@@ -39,3 +65,6 @@ tests-prepare: ## Prepare the test environment (database / fixtures)
 	${CONSOLE} doctrine:schema:update --force --env=test
 	${CONSOLE} doctrine:fixtures:load --no-interaction --env=test
 
+## —— Symfony ————————————————————————————————————————————————————————————
+server: ## Start the Symfony server
+	${SYMFONY} serve -d
