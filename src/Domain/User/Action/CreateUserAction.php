@@ -18,7 +18,7 @@ use Exception;
 class CreateUserAction implements Action
 {
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserRepositoryInterface        $userRepository,
         private readonly SpecificationVerifierInterface $specificationVerifier
     ) {
     }
@@ -29,8 +29,8 @@ class CreateUserAction implements Action
      */
     public function execute(ActionInput $input): ?ActionOutput
     {
-        if(!$this->isAllowed($input->getRequester())) {
-            throw new InvalidRequester(sprintf('%s is not allowed to create a user', (string) $input->getRequester() ?? '"No user"'));
+        if(!$this->isAllowed()) {
+            throw new InvalidRequester(sprintf('%s is not allowed to create a user', (string) $this->userRepository->getCurrentUser() ?? '"No user"'));
         }
 
         $user = match($input->getRole()) {
@@ -48,8 +48,10 @@ class CreateUserAction implements Action
         return null;
     }
 
-    private function isAllowed(?User $user = null): bool
+    private function isAllowed(): bool
     {
+        $user = $this->userRepository->getCurrentUser();
+
         if (!$user) {
             return count($this->userRepository->findAll()) === 0;
         }

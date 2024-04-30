@@ -4,16 +4,16 @@ namespace App\Tests\Infrastructure\Integration\Doctrine\Repository;
 
 use App\Domain\User\Model\Factory\UserFactory;
 use App\Domain\User\Model\User;
-use App\Infrastructure\Doctrine\Repository\UserRepository;
+use App\Infrastructure\Doctrine\Repository\DoctrineUserRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 
 class UserRepositoryTest extends RepositoryKernelTestCase
 {
     /**
-     * @var UserRepository $repository
+     * @var DoctrineUserRepository $repository
      */
     protected ServiceEntityRepositoryInterface $repository;
-    protected string $entityClass = UserRepository::class;
+    protected string $entityClass = DoctrineUserRepository::class;
 
     public function testFindOneById(): void
     {

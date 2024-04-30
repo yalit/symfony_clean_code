@@ -18,4 +18,7 @@ interface UserRepositoryInterface
     public function findAll(): array;
 
     public function delete(string $id): void;
+
+    /** Provides the user that is "logged into" the application */
+    public function getCurrentUser(): ?User;
 }

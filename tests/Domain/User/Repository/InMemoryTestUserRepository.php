@@ -10,7 +10,9 @@ class InMemoryTestUserRepository implements UserRepositoryInterface
     /**
      * @var User[]
      */
-    public array $users = [];
+    private array $users = [];
+
+    private ?User $currentUser = null;
 
     public function save(User $user): void
     {
@@ -44,5 +46,15 @@ class InMemoryTestUserRepository implements UserRepositoryInterface
     public function delete(string $id): void
     {
         unset($this->users[$id]);
+    }
+
+    public function setCurrentUser(?User $user): void
+    {
+        $this->currentUser = $user;
+    }
+
+    public function getCurrentUser(): ?User
+    {
+        return $this->currentUser;
     }
 }

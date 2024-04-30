@@ -13,7 +13,6 @@ class CreateUserInput implements ActionInput
         private readonly string   $email,
         private readonly string   $password,
         private readonly UserRole $role,
-        private readonly ?User $requester = null
     ) {
     }
 
@@ -35,10 +34,5 @@ class CreateUserInput implements ActionInput
     public function getRole(): UserRole
     {
         return $this->role;
-    }
-
-    public function getRequester(): ?User
-    {
-        return $this->requester;
     }
 }

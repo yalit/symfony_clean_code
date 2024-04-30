@@ -6,10 +6,11 @@ use App\Domain\User\Model\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 
-class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
+class DoctrineUserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly Security $security)
     {
         parent::__construct($registry, User::class);
     }
@@ -42,5 +43,12 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     {
         $this->getEntityManager()->remove($this->getOneById($id));
         $this->getEntityManager()->flush();
+    }
+
+    public function getCurrentUser(): ?User
+    {
+        /** @var ?User $currentUser */
+        $currentUser = $this->security->getUser();
+        return $currentUser;
     }
 }

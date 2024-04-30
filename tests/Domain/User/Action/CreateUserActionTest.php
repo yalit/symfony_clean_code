@@ -31,6 +31,7 @@ class CreateUserActionTest extends TestCase
 
         //load fixtures
         (new DomainTestUserFixtures($this->userRepository))->load();
+        $this->userRepository->setCurrentUser($this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
     }
 
     protected function tearDown(): void
@@ -51,7 +52,6 @@ class CreateUserActionTest extends TestCase
             'email' => $email,
             'password' => $password,
             'role' => $role,
-            'requester' => $this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL)
         ]);
 
         $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
@@ -76,6 +76,7 @@ class CreateUserActionTest extends TestCase
 
     public function testCreateUserCommandWithoutRequesterShouldTriggerAnException(): void
     {
+        $this->userRepository->setCurrentUser(null);
         $commandInput = $this->getCreateUserInput([
             'name' => 'Test Admin',
             'email' => 'admin@email.com',
@@ -97,12 +98,13 @@ class CreateUserActionTest extends TestCase
         self::assertNotNull($requester);
         self::assertNotEquals(UserRole::ADMIN, $requester->getRole());
 
+        $this->userRepository->setCurrentUser($requester);
+
         $commandInput = $this->getCreateUserInput([
             'name' => 'Test Admin',
             'email' => 'admin@email.com',
             'password' => 'Password123)',
             'role' => UserRole::ADMIN,
-            'requester' => $requester
         ]);
 
         $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
@@ -123,7 +125,6 @@ class CreateUserActionTest extends TestCase
             'email' => 'admin@email.com',
             'password' => 'Password123)',
             'role' => UserRole::ADMIN,
-            'requester' => $this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL)
         ]);
 
         $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
@@ -142,7 +143,6 @@ class CreateUserActionTest extends TestCase
             $data['email'],
             $data['password'],
             $data['role'],
-            $data['requester'] ?? null
         );
     }
 }
