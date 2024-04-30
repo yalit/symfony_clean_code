@@ -66,5 +66,8 @@ tests-prepare: ## Prepare the test environment (database / fixtures)
 	${CONSOLE} doctrine:fixtures:load --no-interaction --env=test
 
 ## —— Symfony ————————————————————————————————————————————————————————————
-server: ## Start the Symfony server
+serve: ## Start the Symfony server
 	${SYMFONY} serve -d
+
+console: ## Access the Symfony console
+	${CONSOLE} $(filter-out $@,$(MAKECMDGOALS))

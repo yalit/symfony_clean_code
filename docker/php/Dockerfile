@@ -11,4 +11,6 @@ RUN apt install -yqq  libjpeg-dev libpng-dev libbz2-dev libxslt-dev libsodium-de
     && docker-php-ext-install bz2 intl pcntl sodium zip xsl gd \
     && docker-php-ext-enable bz2 intl pcntl sodium zip xsl gd \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+
+RUN curl -sS https://get.symfony.com/cli/installer | bash
