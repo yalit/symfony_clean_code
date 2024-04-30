@@ -22,6 +22,9 @@ class EditUserInput implements ActionInput
         return $this->user;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getData(): array
     {
         return $this->data;

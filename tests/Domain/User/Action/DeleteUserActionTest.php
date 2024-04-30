@@ -54,6 +54,9 @@ class DeleteUserActionTest extends TestCase
         self::assertNotNull($this->userRepository->getOneById($userId));
     }
 
+    /**
+     * @return iterable<string, array<string>>
+     */
     public function getDeleteUserEmails(): iterable
     {
         yield "Editor" => [DomainTestUserFixtures::EDITOR_EMAIL];

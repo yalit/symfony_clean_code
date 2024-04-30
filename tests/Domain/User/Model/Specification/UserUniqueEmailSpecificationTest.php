@@ -30,7 +30,7 @@ class UserUniqueEmailSpecificationTest extends TestCase
         self::assertTrue($specification->isSatisfiedBy($testUser));
     }
 
-    public function testIsNotSatisfiedByExistingEmail()
+    public function testIsNotSatisfiedByExistingEmail(): void
     {
         $userRepository = new InMemoryTestUserRepository();
         $userRepository->save(UserFactory::createAdmin('Admin', 'admin@email.com', 'Password123)'));

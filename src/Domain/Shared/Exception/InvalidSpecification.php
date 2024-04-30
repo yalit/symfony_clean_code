@@ -7,6 +7,9 @@ use Throwable;
 
 class InvalidSpecification extends Exception
 {
+    /**
+     * @param mixed $object
+     */
     public function __construct(string $specificationClass, $object, int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct(sprintf("The following specification %s is not satisfied by %s", $specificationClass, (string)$object), $code, $previous);

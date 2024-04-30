@@ -13,7 +13,7 @@ class UserRepositoryTest extends RepositoryKernelTestCase
      * @var DoctrineUserRepository $repository
      */
     protected ServiceEntityRepositoryInterface $repository;
-    protected string $entityClass = DoctrineUserRepository::class;
+    protected string $entityClass = User::class;
 
     public function testFindOneById(): void
     {

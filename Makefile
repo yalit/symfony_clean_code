@@ -11,9 +11,10 @@ export GROUP_ID
 PHP_CONTAINER = hexa-php
 
 DOCKER = docker
-SYMFONY =  ${DOCKER} exec -it ${PHP_CONTAINER} symfony
-CONSOLE = ${DOCKER} exec -it ${PHP_CONTAINER} bin/console
-COMPOSER = ${DOCKER} exec -it ${PHP_CONTAINER} composer
+DOCKER_EXEC = ${DOCKER} exec -it ${PHP_CONTAINER}
+SYMFONY =  ${DOCKER_EXEC} symfony
+CONSOLE = ${DOCKER_EXEC} bin/console
+COMPOSER = ${DOCKER_EXEC} composer
 
 VERSION := $(shell $$SHELL -c 'echo $$ZSH_VERSION')
 read_param = $(if $(2), $(shell echo $(2)), $(if $(strip $VERSION), $(shell $$SHELL -c 'read param\?"$(1) : "; echo $$param'), $(shell $$SHELL -c 'read "$(1) : " param; echo $$param')))
@@ -44,7 +45,6 @@ require: ## Require a new package
 require-dev: ## Require a new package
 	${COMPOSER} require --dev $(filter-out $@,$(MAKECMDGOALS))
 
-
 ## —— Doctrine ————————————————————————————————————————————————————————————
 db-create: db-drop ## Create the database
 	${CONSOLE} doctrine:database:create --env=dev
@@ -64,6 +64,10 @@ tests-prepare: ## Prepare the test environment (database / fixtures)
 	${CONSOLE} doctrine:database:create --env=test
 	${CONSOLE} doctrine:schema:update --force --env=test
 	${CONSOLE} doctrine:fixtures:load --no-interaction --env=test
+
+## —— Static analysis ————————————————————————————————————————————————————————————
+phpstan: ## Launch PHPStan
+	${DOCKER_EXEC} vendor/bin/phpstan analyse -c phpstan.neon
 
 ## —— Symfony ————————————————————————————————————————————————————————————
 serve: ## Start the Symfony server
