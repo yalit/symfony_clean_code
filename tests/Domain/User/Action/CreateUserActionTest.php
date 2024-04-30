@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\User\Action;
 
+use App\Domain\Shared\Action\InvalidRequester;
 use App\Domain\Shared\Specification\InvalidSpecification;
 use App\Domain\Shared\Specification\SpecificationVerifierInterface;
 use App\Domain\User\Action\CreateUserAction;
@@ -12,11 +13,13 @@ use App\Domain\User\Model\Specification\UserUniqueEmailSpecification;
 use App\Domain\User\Model\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Tests\Domain\Shared\Specification\TestSpecificationVerifier;
+use App\Tests\Domain\User\Repository\DomainTestUserFixtures;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
 use PHPUnit\Framework\TestCase;
 
 class CreateUserActionTest extends TestCase
 {
+
     private SpecificationVerifierInterface $specificationVerifier;
     private UserRepositoryInterface $userRepository;
 
@@ -26,6 +29,16 @@ class CreateUserActionTest extends TestCase
         $this->specificationVerifier = new TestSpecificationVerifier();
         $this->userRepository = new InMemoryTestUserRepository();
         $this->specificationVerifier->addSpecification(new UserUniqueEmailSpecification($this->userRepository));
+
+        //load fixtures
+        (new DomainTestUserFixtures($this->userRepository))->load();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        unset($this->userRepository);
+        unset($this->specificationVerifier);
     }
 
     /**
@@ -33,19 +46,22 @@ class CreateUserActionTest extends TestCase
      */
     public function testCreateUserAdminCommand(string $name, string $email, string $password, UserRole $role): void
     {
+        $originalUserCount = count($this->userRepository->findAll());
         $commandInput = $this->getCreateUserInput([
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'role' => $role
+            'role' => $role,
+            'requester' => $this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL)
         ]);
 
         $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
         $command->execute($commandInput);
 
         $users = $this->userRepository->findAll();
-        self::assertCount(1, $users);
-        $user = array_pop($users);
+        self::assertCount($originalUserCount + 1, $users);
+        $user = $this->userRepository->getOneByEmail($email);
+        self::assertNotNull($user);
         self::assertInstanceOf(User::class, $user);
         self::assertEquals($name, $user->getName());
         self::assertEquals($email, $user->getEmail());
@@ -54,20 +70,61 @@ class CreateUserActionTest extends TestCase
 
     public function getUserInput(): iterable
     {
-        yield 'Admin' => ['Test Admin', 'admin@email.com', 'Password123)', UserRole::ADMIN];
-        yield 'Editor' => ['Test Editor', 'editor@email.com', 'Password123)', UserRole::EDITOR];
-        yield 'Author' => ['Test Author', 'author@email.com', 'Password123)', UserRole::AUTHOR];
+        yield 'Admin' => ['Test Admin', 'new_admin@email.com', 'Password123)', UserRole::ADMIN];
+        yield 'Editor' => ['Test Editor', 'new_editor@email.com', 'Password123)', UserRole::EDITOR];
+        yield 'Author' => ['Test Author', 'new_author@email.com', 'Password123)', UserRole::AUTHOR];
     }
 
-    public function testCreateUserCommandWithExistingEmail(): void
+    public function testCreateUserCommandWithoutRequesterShouldTriggerAnException(): void
     {
-        $this->userRepository->save(UserFactory::createAdmin('Test First Admin', "admin@email.com", "Password123)"));
+        $commandInput = $this->getCreateUserInput([
+            'name' => 'Test Admin',
+            'email' => 'admin@email.com',
+            'password' => 'Password123)',
+            'role' => UserRole::ADMIN,
+        ]);
+
+        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
+        $this->expectException(InvalidRequester::class);
+        $command->execute($commandInput);
+    }
+
+    /**
+     * @dataProvider getIncorrectRequesterEmail
+     */
+    public function testCreateUserCommandWithAnIncorrectRequesterShouldTriggerAnException(string $requesterEmail): void
+    {
+        $requester = $this->userRepository->getOneByEmail($requesterEmail);
+        self::assertNotNull($requester);
+        self::assertNotEquals(UserRole::ADMIN, $requester->getRole());
 
         $commandInput = $this->getCreateUserInput([
             'name' => 'Test Admin',
             'email' => 'admin@email.com',
             'password' => 'Password123)',
-            'role' => UserRole::ADMIN
+            'role' => UserRole::ADMIN,
+            'requester' => $requester
+        ]);
+
+        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
+        $this->expectException(InvalidRequester::class);
+        $command->execute($commandInput);
+    }
+
+    public function getIncorrectRequesterEmail(): iterable
+    {
+        yield "Editor" => [DomainTestUserFixtures::EDITOR_EMAIL];
+        yield "Author" => [DomainTestUserFixtures::AUTHOR_EMAIL];
+    }
+
+    public function testCreateUserCommandWithExistingEmail(): void
+    {
+        $commandInput = $this->getCreateUserInput([
+            'name' => 'Test Admin',
+            'email' => 'admin@email.com',
+            'password' => 'Password123)',
+            'role' => UserRole::ADMIN,
+            'requester' => $this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL)
         ]);
 
         $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
@@ -85,7 +142,8 @@ class CreateUserActionTest extends TestCase
             $data['name'],
             $data['email'],
             $data['password'],
-            $data['role']
+            $data['role'],
+            $data['requester'] ?? null
         );
     }
 }
