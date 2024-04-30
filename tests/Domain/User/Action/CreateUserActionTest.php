@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Tests\Domain\User\Action;
+
+use App\Domain\Shared\Specification\InvalidSpecification;
+use App\Domain\Shared\Specification\SpecificationVerifierInterface;
+use App\Domain\User\Action\CreateUserAction;
+use App\Domain\User\Action\CreateUserInput;
+use App\Domain\User\Model\Enum\UserRole;
+use App\Domain\User\Model\Factory\UserFactory;
+use App\Domain\User\Model\Specification\UserUniqueEmailSpecification;
+use App\Domain\User\Model\User;
+use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Tests\Domain\Shared\Specification\TestSpecificationVerifier;
+use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
+use PHPUnit\Framework\TestCase;
+
+class CreateUserActionTest extends TestCase
+{
+    private SpecificationVerifierInterface $specificationVerifier;
+    private UserRepositoryInterface $userRepository;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->specificationVerifier = new TestSpecificationVerifier();
+        $this->userRepository = new InMemoryTestUserRepository();
+        $this->specificationVerifier->addSpecification(new UserUniqueEmailSpecification($this->userRepository));
+    }
+
+    /**
+     * @dataProvider getUserInput
+     */
+    public function testCreateUserAdminCommand(string $name, string $email, string $password, UserRole $role): void
+    {
+        $commandInput = $this->getCreateUserInput([
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'role' => $role
+        ]);
+
+        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
+        $command->execute($commandInput);
+
+        $users = $this->userRepository->findAll();
+        self::assertCount(1, $users);
+        $user = array_pop($users);
+        self::assertInstanceOf(User::class, $user);
+        self::assertEquals($name, $user->getName());
+        self::assertEquals($email, $user->getEmail());
+        self::assertEquals($role, $user->getRole());
+    }
+
+    public function getUserInput(): iterable
+    {
+        yield 'Admin' => ['Test Admin', 'admin@email.com', 'Password123)', UserRole::ADMIN];
+        yield 'Editor' => ['Test Editor', 'editor@email.com', 'Password123)', UserRole::EDITOR];
+        yield 'Author' => ['Test Author', 'author@email.com', 'Password123)', UserRole::AUTHOR];
+    }
+
+    public function testCreateUserCommandWithExistingEmail(): void
+    {
+        $this->userRepository->save(UserFactory::createAdmin('Test First Admin', "admin@email.com", "Password123)"));
+
+        $commandInput = $this->getCreateUserInput([
+            'name' => 'Test Admin',
+            'email' => 'admin@email.com',
+            'password' => 'Password123)',
+            'role' => UserRole::ADMIN
+        ]);
+
+        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
+        $this->expectException(InvalidSpecification::class);
+        $command->execute($commandInput);
+
+        self::assertStringContainsString(UserUniqueEmailSpecification::class, $this->getExpectedExceptionMessage());
+        self::assertStringContainsString('Test Admin', $this->getExpectedExceptionMessage());
+        self::assertStringContainsString('admin@email.com', $this->getExpectedExceptionMessage());
+    }
+
+    private function getCreateUserInput(array $data): CreateUserInput
+    {
+        return new CreateUserInput(
+            $data['name'],
+            $data['email'],
+            $data['password'],
+            $data['role']
+        );
+    }
+}

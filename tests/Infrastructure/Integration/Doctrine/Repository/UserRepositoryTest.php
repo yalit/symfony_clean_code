@@ -2,8 +2,8 @@
 
 namespace App\Tests\Infrastructure\Integration\Doctrine\Repository;
 
-use App\Domain\Model\User;
-use App\Domain\Model\Factory\UserFactory;
+use App\Domain\User\Model\Factory\UserFactory;
+use App\Domain\User\Model\User;
 use App\Infrastructure\Doctrine\Repository\UserRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 
@@ -47,7 +47,7 @@ class UserRepositoryTest extends RepositoryKernelTestCase
 
         $authorName = 'User 1';
         $authorEmail = 'author1_test@email.com';
-        $author = UserFactory::createAuthor($authorName, $authorEmail);
+        $author = UserFactory::createAuthor($authorName, $authorEmail, 'Password123)');
         $this->repository->save($author);
 
         $this->assertNotNull($author->getId());

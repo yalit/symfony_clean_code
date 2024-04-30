@@ -13,10 +13,10 @@ doctrine:
         report_fields_where_declared: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         mappings:
-            Domain:
+            DomainUser:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Infrastructure/Doctrine/Mapping'
-                prefix: 'App\Domain\Model'
+                prefix: 'App\Domain\User\Model'
                 type: xml
                 alias: App
 

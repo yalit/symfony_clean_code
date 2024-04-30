@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Doctrine\Repository;
 
-use App\Domain\Model\User;
-use App\Domain\Repository\UserRepositoryInterface;
+use App\Domain\User\Model\User;
+use App\Domain\User\Repository\UserRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -25,12 +25,17 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $this->find($id);
     }
 
+    public function getOneByEmail(string $email): ?User
+    {
+        return $this->findOneBy(['email' => $email]);
+    }
+
     /**
      * @return User[]
      */
-    public function getAll(): array
+    public function findAll(): array
     {
-        return $this->findAll();
+        return parent::findAll();
     }
 
     public function delete(string $id): void

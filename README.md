@@ -22,7 +22,7 @@ There are 3 level of users:
 - `editor`: can: the same as author plus
   - publish a post
   - un-publish a post
-- `admin`: can do anything
+- `admin`: can do anything on the posts + administrate users
 - any anonymous user can read a post
 
 # Infrastructure
