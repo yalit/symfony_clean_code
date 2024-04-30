@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Shared\Action;
+namespace App\Domain\Shared\Exception;
 
-use App\Domain\User\Model\User;
 use Exception;
+use Throwable;
 
 class InvalidRequester extends Exception
 {

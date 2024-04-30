@@ -2,13 +2,12 @@
 
 namespace App\Tests\Domain\User\Action;
 
-use App\Domain\Shared\Action\InvalidRequester;
-use App\Domain\Shared\Specification\InvalidSpecification;
+use App\Domain\Shared\Exception\InvalidRequester;
+use App\Domain\Shared\Exception\InvalidSpecification;
 use App\Domain\Shared\Specification\SpecificationVerifierInterface;
 use App\Domain\User\Action\CreateUserAction;
 use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Model\Enum\UserRole;
-use App\Domain\User\Model\Factory\UserFactory;
 use App\Domain\User\Model\Specification\UserUniqueEmailSpecification;
 use App\Domain\User\Model\User;
 use App\Domain\User\Repository\UserRepositoryInterface;

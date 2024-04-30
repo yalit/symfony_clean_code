@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Domain\Shared\Specification;
+namespace App\Domain\Shared\Exception;
 
 use Exception;
+use Throwable;
 
 class InvalidSpecification extends Exception
 {
