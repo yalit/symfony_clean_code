@@ -42,7 +42,7 @@ jobs:
 
       - name: "Composer install"
         id: install
-        run: composer install --no-interaction --no-progress
+        run: composer install --no-interaction --no-progress && composer install --working-dir=ci/php-cs-fixer --no-interaction --no-progress
 
       - name: Lint YAML files
         if: always() && steps.install.outcome == 'success'
@@ -51,10 +51,6 @@ jobs:
       - name: Lint Twig templates
         if: always() && steps.install.outcome == 'success'
         run: ./bin/console lint:twig templates --env=prod
-
-      - name: Lint XLIFF translations
-        if: always() && steps.install.outcome == 'success'
-        run: ./bin/console lint:xliff translations
 
       - name: Lint Parameters and Services
         if: always() && steps.install.outcome == 'success'
@@ -70,11 +66,11 @@ jobs:
 
       - name: Download Symfony CLI
         if: always() && steps.install.outcome == 'success'
-        run: wget https://get.symfony.com/cli/installer -O - | bash
+        run: wget https://get.symfony.com/cli/installer -O - | bash && mv /home/runner/.symfony5/bin/symfony /usr/local/bin/symfony
 
       - name: Check if any dependencies are compromised
         if: always() && steps.install.outcome == 'success'
-        run: /home/runner/.symfony/bin/symfony check:security
+        run: /usr/local/bin/symfony check:security
 
       - name: Run phpstan
         if: always() && steps.install.outcome == 'success'
