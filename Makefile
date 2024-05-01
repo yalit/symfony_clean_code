@@ -1,3 +1,4 @@
+.PHONY: tests
 # Inspired from https://www.strangebuzz.com/en/snippets/the-perfect-makefile-for-symfony
 USER_ID:=$(shell id -u)
 GROUP_ID:=$(shell id -g)
@@ -69,6 +70,17 @@ tests-prepare: ## Prepare the test environment (database / fixtures)
 	${CONSOLE} doctrine:schema:update --force --env=test
 	${CONSOLE} doctrine:fixtures:load --no-interaction --env=test
 
+tests: ## Launch the tests
+	${DOCKER_EXEC} bin/phpunit
+
+tests-domain: ## Launch the domain tests
+	${DOCKER_EXEC} bin/phpunit --testsuite=Domain
+
+tests-infrastructure: ## Launch the infrastructure tests
+	${DOCKER_EXEC} bin/phpunit --testsuite=Infrastructure
+
+tests-application: ## Launch the application tests
+	${DOCKER_EXEC} bin/phpunit --testsuite=Application
 ## —— Static analysis ————————————————————————————————————————————————————————————
 analyze: phpstan php-cs-fixer ## Launch PHPStan and PHP-CS-Fixer
 
