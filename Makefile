@@ -30,6 +30,12 @@ up: down ## Docker container up (without build)
 down: ## Docker container down
 	${DOCKER} compose down
 
+bash-php: ## Access the PHP container
+	${DOCKER_EXEC} bash
+
+execute: ## Execute a command in the PHP container
+	${DOCKER_EXEC} $(filter-out $@,$(MAKECMDGOALS))
+
 ## —— Composer ————————————————————————————————————————————————————————————
 install: ## Install the project dependencies
 	${COMPOSER} install
@@ -66,6 +72,9 @@ tests-prepare: ## Prepare the test environment (database / fixtures)
 ## —— Static analysis ————————————————————————————————————————————————————————————
 phpstan: ## Launch PHPStan
 	${DOCKER_EXEC} vendor/bin/phpstan analyse -c phpstan.neon
+
+php-cs-fixer: ## Launch PHP-CS-Fixer
+	${DOCKER_EXEC} ci/php-cs-fixer/vendor/bin/php-cs-fixer fix src tests --verbose
 
 ## —— Symfony ————————————————————————————————————————————————————————————
 serve: ## Start the Symfony server
