@@ -1,4 +1,6 @@
 {
+    "name": "symfony-clean-code",
+    "description": "A small test/example of a clean code setup in Symfony",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
