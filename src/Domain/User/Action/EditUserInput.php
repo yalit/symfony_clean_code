@@ -13,15 +13,16 @@ class EditUserInput implements ActionInput
     public function __construct(
         private readonly User $user,
         private readonly array $data,
-    )
-    {
-    }
+    ) {}
 
     public function getUser(): User
     {
         return $this->user;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getData(): array
     {
         return $this->data;

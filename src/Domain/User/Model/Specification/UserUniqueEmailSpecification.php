@@ -8,9 +8,7 @@ use App\Domain\User\Repository\UserRepositoryInterface;
 
 class UserUniqueEmailSpecification implements SpecificationInterface
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private readonly UserRepositoryInterface $userRepository) {}
 
     /**
      * @param User $object

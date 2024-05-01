@@ -18,9 +18,8 @@ use PHPUnit\Framework\TestCase;
 
 class CreateUserActionTest extends TestCase
 {
-
     private SpecificationVerifierInterface $specificationVerifier;
-    private UserRepositoryInterface $userRepository;
+    private InMemoryTestUserRepository $userRepository;
 
     public function setUp(): void
     {
@@ -67,6 +66,9 @@ class CreateUserActionTest extends TestCase
         self::assertEquals($role, $user->getRole());
     }
 
+    /**
+     * @return iterable<string, array<string>>
+     */
     public function getUserInput(): iterable
     {
         yield 'Admin' => ['Test Admin', 'new_admin@email.com', 'Password123)', UserRole::ADMIN];
@@ -112,6 +114,9 @@ class CreateUserActionTest extends TestCase
         $command->execute($commandInput);
     }
 
+    /**
+     * @return iterable<string, array<string>>
+     */
     public function getIncorrectRequesterEmail(): iterable
     {
         yield "Editor" => [DomainTestUserFixtures::EDITOR_EMAIL];
@@ -136,6 +141,9 @@ class CreateUserActionTest extends TestCase
         self::assertStringContainsString('admin@email.com', $this->getExpectedExceptionMessage());
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     private function getCreateUserInput(array $data): CreateUserInput
     {
         return new CreateUserInput(

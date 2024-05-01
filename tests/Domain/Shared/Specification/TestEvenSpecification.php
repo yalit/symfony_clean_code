@@ -6,7 +6,6 @@ use App\Domain\Shared\Specification\SpecificationInterface;
 
 class TestEvenSpecification implements SpecificationInterface
 {
-
     public function isSatisfiedBy($object): bool
     {
         if (!is_int($object)) {

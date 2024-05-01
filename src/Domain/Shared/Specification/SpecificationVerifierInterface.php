@@ -6,6 +6,7 @@ interface SpecificationVerifierInterface
 {
     /**
      * @param class-string[] $specifications
+     * @param mixed $object
      */
     public function satisfies(array $specifications, $object): bool;
 

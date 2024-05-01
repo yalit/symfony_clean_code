@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class EditUserActionTest extends TestCase
 {
-    private UserRepositoryInterface $userRepository;
+    private InMemoryTestUserRepository $userRepository;
 
     public function setUp(): void
     {
@@ -29,6 +29,7 @@ class EditUserActionTest extends TestCase
 
     /**
      * @dataProvider getUserEditData
+     * @param array<string, mixed> $data
      */
     public function testEditUserAction(string $userEmail, array $data): void
     {
@@ -45,6 +46,7 @@ class EditUserActionTest extends TestCase
 
     /**
      * @dataProvider getUserEditData
+     * @param array<string, mixed> $data
      */
     public function testEditUserActionByItself(string $userEmail, array $data): void
     {
@@ -62,6 +64,10 @@ class EditUserActionTest extends TestCase
             $this->assertEquals($value, $updatedUser->$getter());
         }
     }
+
+    /**
+     * @return iterable<string, array<string, mixed>>
+     */
     public function getUserEditData(): iterable
     {
         yield 'Single email' => ['userEmail' => DomainTestUserFixtures::EDITOR_EMAIL, 'data' => ['email' => 'newEmail@email.com']];
@@ -105,6 +111,9 @@ class EditUserActionTest extends TestCase
         self::assertNotEquals('New Editor Name', $updateUser->getName());
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     private function getEditUserInput(string $userEmail, array $data): EditUserInput
     {
         return new EditUserInput(

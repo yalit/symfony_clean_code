@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class StringEnumValueValidator extends ConstraintValidator
 {
-
     /**
      * @inheritDoc
      */

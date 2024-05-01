@@ -13,19 +13,17 @@ class DomainTestUserFixtures
 
     public const PASSWORD = 'Password123)';
 
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private readonly UserRepositoryInterface $userRepository) {}
 
     public function load(): void
     {
-        $admin = UserFactory::createAdmin('Admin', self::ADMIN_EMAIL,self::PASSWORD);
+        $admin = UserFactory::createAdmin('Admin', self::ADMIN_EMAIL, self::PASSWORD);
         $this->userRepository->save($admin);
 
-        $editor = UserFactory::createEditor('Editor', self::EDITOR_EMAIL,self::PASSWORD);
+        $editor = UserFactory::createEditor('Editor', self::EDITOR_EMAIL, self::PASSWORD);
         $this->userRepository->save($editor);
 
-        $author = UserFactory::createAuthor('Author', self::AUTHOR_EMAIL,self::PASSWORD);
+        $author = UserFactory::createAuthor('Author', self::AUTHOR_EMAIL, self::PASSWORD);
         $this->userRepository->save($author);
     }
 }

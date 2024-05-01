@@ -13,8 +13,7 @@ class CreateUserInput implements ActionInput
         private readonly string   $email,
         private readonly string   $password,
         private readonly UserRole $role,
-    ) {
-    }
+    ) {}
 
     public function getName(): string
     {

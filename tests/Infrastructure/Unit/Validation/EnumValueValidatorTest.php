@@ -9,6 +9,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
+/**
+ * @template-extends ConstraintValidatorTestCase<StringEnumValueValidator>
+ */
 class EnumValueValidatorTest extends ConstraintValidatorTestCase
 {
     protected function createValidator(): ConstraintValidator

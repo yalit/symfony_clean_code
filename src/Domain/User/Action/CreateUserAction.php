@@ -19,9 +19,8 @@ class CreateUserAction implements Action
 {
     public function __construct(
         private readonly UserRepositoryInterface        $userRepository,
-        private readonly SpecificationVerifierInterface $specificationVerifier
-    ) {
-    }
+        private readonly SpecificationVerifierInterface $specificationVerifier,
+    ) {}
 
     /**
      * @param CreateUserInput $input
@@ -30,14 +29,13 @@ class CreateUserAction implements Action
     public function execute(ActionInput $input): ?ActionOutput
     {
         if(!$this->isAllowed()) {
-            throw new InvalidRequester(sprintf('%s is not allowed to create a user', (string) $this->userRepository->getCurrentUser() ?? '"No user"'));
+            throw new InvalidRequester(sprintf('%s is not allowed to create a user', $this->userRepository->getCurrentUser() ?? '"No user"'));
         }
 
         $user = match($input->getRole()) {
             UserRole::ADMIN => UserFactory::createAdmin($input->getName(), $input->getEmail(), $input->getPassword()),
             UserRole::EDITOR => UserFactory::createEditor($input->getName(), $input->getEmail(), $input->getPassword()),
             UserRole::AUTHOR => UserFactory::createAuthor($input->getName(), $input->getEmail(), $input->getPassword()),
-            default => throw new \Exception('Unexpected user role'),
         };
 
         if(!$this->specificationVerifier->satisfies([UserUniqueEmailSpecification::class], $user)) {
@@ -57,8 +55,8 @@ class CreateUserAction implements Action
         }
 
         return match ($user->getRole()) {
-          UserRole::ADMIN => true,
-          default => false
+            UserRole::ADMIN => true,
+            default => false,
         };
     }
 }

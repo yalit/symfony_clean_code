@@ -2,7 +2,4 @@
 
 namespace App\Domain\Shared\Query;
 
-interface QueryInput
-{
-
-}
+interface QueryInput {}
