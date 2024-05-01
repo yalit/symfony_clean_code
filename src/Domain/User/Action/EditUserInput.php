@@ -13,9 +13,7 @@ class EditUserInput implements ActionInput
     public function __construct(
         private readonly User $user,
         private readonly array $data,
-    )
-    {
-    }
+    ) {}
 
     public function getUser(): User
     {

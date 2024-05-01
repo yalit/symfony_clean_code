@@ -12,9 +12,7 @@ use App\Domain\User\Repository\UserRepositoryInterface;
 
 class DeleteUserAction implements Action
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private readonly UserRepositoryInterface $userRepository) {}
 
     /**
      * @param DeleteUserInput $input
@@ -43,7 +41,7 @@ class DeleteUserAction implements Action
             return false;
         }
 
-        if ($requester->getRole() === UserRole::ADMIN){
+        if ($requester->getRole() === UserRole::ADMIN) {
             return true;
         }
 

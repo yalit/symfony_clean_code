@@ -2,7 +2,4 @@
 
 namespace App\Domain\Shared\Action;
 
-class ActionOutput
-{
-
-}
+class ActionOutput {}

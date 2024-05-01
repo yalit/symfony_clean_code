@@ -18,7 +18,6 @@ use PHPUnit\Framework\TestCase;
 
 class CreateUserActionTest extends TestCase
 {
-
     private SpecificationVerifierInterface $specificationVerifier;
     private InMemoryTestUserRepository $userRepository;
 

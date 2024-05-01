@@ -19,9 +19,8 @@ class CreateUserAction implements Action
 {
     public function __construct(
         private readonly UserRepositoryInterface        $userRepository,
-        private readonly SpecificationVerifierInterface $specificationVerifier
-    ) {
-    }
+        private readonly SpecificationVerifierInterface $specificationVerifier,
+    ) {}
 
     /**
      * @param CreateUserInput $input
@@ -56,8 +55,8 @@ class CreateUserAction implements Action
         }
 
         return match ($user->getRole()) {
-          UserRole::ADMIN => true,
-          default => false
+            UserRole::ADMIN => true,
+            default => false,
         };
     }
 }

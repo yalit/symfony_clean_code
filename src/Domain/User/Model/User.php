@@ -19,15 +19,15 @@ class User
         private string $name,
         private string $email,
         private UserRole $role,
-        private string $password
+        private string $password,
     ) {}
 
     public function __toString(): string
     {
-        return $this->name."/".$this->email;
+        return $this->name . "/" . $this->email;
     }
 
-    public function getId():string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -52,7 +52,7 @@ class User
         $this->email = $email;
     }
 
-    public function getRole():UserRole
+    public function getRole(): UserRole
     {
         return $this->role;
     }

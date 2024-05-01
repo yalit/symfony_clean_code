@@ -12,9 +12,7 @@ use App\Domain\User\Repository\UserRepositoryInterface;
 
 class EditUserAction implements Action
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private readonly UserRepositoryInterface $userRepository) {}
 
     /**
      * @param EditUserInput $input
@@ -51,7 +49,7 @@ class EditUserAction implements Action
             return false;
         }
 
-        if ($requester->getRole() === UserRole::ADMIN || $requester->getId() === $user->getId()){
+        if ($requester->getRole() === UserRole::ADMIN || $requester->getId() === $user->getId()) {
             return true;
         }
 
