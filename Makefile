@@ -70,6 +70,8 @@ tests-prepare: ## Prepare the test environment (database / fixtures)
 	${CONSOLE} doctrine:fixtures:load --no-interaction --env=test
 
 ## —— Static analysis ————————————————————————————————————————————————————————————
+analyze: phpstan php-cs-fixer ## Launch PHPStan and PHP-CS-Fixer
+
 phpstan: ## Launch PHPStan
 	${DOCKER_EXEC} vendor/bin/phpstan analyse -c phpstan.neon
 
