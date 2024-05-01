@@ -1,5 +1,3 @@
-PHONY: tests
-
 # Inspired from https://www.strangebuzz.com/en/snippets/the-perfect-makefile-for-symfony
 USER_ID:=$(shell id -u)
 GROUP_ID:=$(shell id -g)
