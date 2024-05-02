@@ -8,9 +8,8 @@ use App\Domain\Shared\Specification\SpecificationVerifierInterface;
 use App\Domain\User\Action\CreateUserAction;
 use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Model\Enum\UserRole;
-use App\Domain\User\Model\Specification\UserUniqueEmailSpecification;
 use App\Domain\User\Model\User;
-use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Domain\User\Specification\UserUniqueEmailSpecification;
 use App\Tests\Domain\Shared\Specification\TestSpecificationVerifier;
 use App\Tests\Domain\User\Repository\DomainTestUserFixtures;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
@@ -26,7 +25,6 @@ class CreateUserActionTest extends TestCase
         parent::setUp();
         $this->specificationVerifier = new TestSpecificationVerifier();
         $this->userRepository = new InMemoryTestUserRepository();
-        $this->specificationVerifier->addSpecification(new UserUniqueEmailSpecification($this->userRepository));
 
         //load fixtures
         (new DomainTestUserFixtures($this->userRepository))->load();
@@ -54,7 +52,7 @@ class CreateUserActionTest extends TestCase
         ]);
 
         $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
-        $command->execute($commandInput);
+        $command($commandInput);
 
         $users = $this->userRepository->findAll();
         self::assertCount($originalUserCount + 1, $users);
@@ -88,7 +86,7 @@ class CreateUserActionTest extends TestCase
 
         $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
         $this->expectException(InvalidRequester::class);
-        $command->execute($commandInput);
+        $command($commandInput);
     }
 
     /**
@@ -111,7 +109,7 @@ class CreateUserActionTest extends TestCase
 
         $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
         $this->expectException(InvalidRequester::class);
-        $command->execute($commandInput);
+        $command($commandInput);
     }
 
     /**
@@ -134,7 +132,7 @@ class CreateUserActionTest extends TestCase
 
         $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
         $this->expectException(InvalidSpecification::class);
-        $command->execute($commandInput);
+        $command($commandInput);
 
         self::assertStringContainsString(UserUniqueEmailSpecification::class, $this->getExpectedExceptionMessage());
         self::assertStringContainsString('Test Admin', $this->getExpectedExceptionMessage());

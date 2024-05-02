@@ -3,16 +3,14 @@
 namespace App\Domain\User\Action;
 
 use App\Domain\Shared\Action\Action;
-use App\Domain\Shared\Action\ActionInput;
 use App\Domain\Shared\Action\ActionOutput;
 use App\Domain\Shared\Exception\InvalidRequester;
 use App\Domain\Shared\Exception\InvalidSpecification;
 use App\Domain\Shared\Specification\SpecificationVerifierInterface;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\Factory\UserFactory;
-use App\Domain\User\Model\Specification\UserUniqueEmailSpecification;
-use App\Domain\User\Model\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Domain\User\Specification\UserUniqueEmailSpecification;
 use Exception;
 
 class CreateUserAction implements Action
@@ -23,10 +21,9 @@ class CreateUserAction implements Action
     ) {}
 
     /**
-     * @param CreateUserInput $input
      * @throws Exception
      */
-    public function execute(ActionInput $input): ?ActionOutput
+    public function __invoke(CreateUserInput $input): ?ActionOutput
     {
         if(!$this->isAllowed()) {
             throw new InvalidRequester(sprintf('%s is not allowed to create a user', $this->userRepository->getCurrentUser() ?? '"No user"'));
@@ -38,7 +35,7 @@ class CreateUserAction implements Action
             UserRole::AUTHOR => UserFactory::createAuthor($input->getName(), $input->getEmail(), $input->getPassword()),
         };
 
-        if(!$this->specificationVerifier->satisfies([UserUniqueEmailSpecification::class], $user)) {
+        if(!$this->specificationVerifier->satisfies([new UserUniqueEmailSpecification($this->userRepository)], $user)) {
             throw new InvalidSpecification(UserUniqueEmailSpecification::class, $user);
         }
         $this->userRepository->save($user);

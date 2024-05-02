@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\Shared\Specification;
+namespace App\Tests\Shared\Specification;
 
 use App\Domain\Shared\Specification\SpecificationInterface;
 

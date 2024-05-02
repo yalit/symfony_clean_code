@@ -63,6 +63,12 @@ db-update: ## Update the database
 db-fixtures: db-create db-update ## Load fixtures into the database
 	${CONSOLE} doctrine:fixtures:load --no-interaction --env=dev
 
+migration: ## Create a new migration
+	${CONSOLE} make:migration
+
+migrate: ## Execute the migrations in DEV environment
+	${CONSOLE} doctrine:migrations:migrate --no-interaction
+
 ## —— Testing ————————————————————————————————————————————————————————————
 tests-prepare: ## Prepare the test environment (database / fixtures)
 	${CONSOLE} doctrine:database:drop --force --env=test

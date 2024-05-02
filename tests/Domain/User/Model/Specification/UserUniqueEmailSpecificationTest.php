@@ -3,7 +3,7 @@
 namespace App\Tests\Domain\User\Model\Specification;
 
 use App\Domain\User\Model\Factory\UserFactory;
-use App\Domain\User\Model\Specification\UserUniqueEmailSpecification;
+use App\Domain\User\Specification\UserUniqueEmailSpecification;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
 use PHPUnit\Framework\TestCase;
 

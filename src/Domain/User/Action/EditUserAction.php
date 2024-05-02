@@ -15,10 +15,9 @@ class EditUserAction implements Action
     public function __construct(private readonly UserRepositoryInterface $userRepository) {}
 
     /**
-     * @param EditUserInput $input
      * @throws InvalidRequester
      */
-    public function execute(ActionInput $input): ?ActionOutput
+    public function __invoke(EditUserInput $input): ?ActionOutput
     {
         if (!$this->isAllowed($input->getUser())) {
             throw new InvalidRequester();
