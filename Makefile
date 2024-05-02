@@ -91,6 +91,10 @@ tests-application: ## Launch the application tests
 	${DOCKER_EXEC} bin/phpunit --testsuite=Application
 ## —— Static analysis ————————————————————————————————————————————————————————————
 analyze: phpstan php-cs-fixer ## Launch PHPStan and PHP-CS-Fixer
+	${CONSOLE} lint:yaml config --parse-tags
+	${CONSOLE} lint:twig templates
+	${CONSOLE} lint:container
+	${COMPOSER} validate
 
 phpstan: ## Launch PHPStan
 	${DOCKER_EXEC} vendor/bin/phpstan analyse -c phpstan.neon
