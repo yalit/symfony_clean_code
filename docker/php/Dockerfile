@@ -35,3 +35,7 @@ RUN yes | pecl install xdebug
 ## Php conf
 COPY php.ini /usr/local/etc/php/conf.d/app.ini
 COPY xdebug.ini /usr/local/etc/php/conf.d/
+
+## Symfony CLI
+RUN curl -sS https://get.symfony.com/cli/installer | bash
+RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
