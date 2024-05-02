@@ -42,7 +42,7 @@ class AdminCreateFirstCommandTest extends KernelTestCase
         $commandTester->execute([
             'name' => 'Wouter',
             'email' => 'admin@email.com',
-            'password' => 'Password123)'
+            'password' => 'Password123)',
         ]);
 
         $commandTester->assertCommandIsSuccessful();
@@ -65,7 +65,7 @@ class AdminCreateFirstCommandTest extends KernelTestCase
         $commandTester->setInputs(['Wouter', 'yes']);
         $commandTester->execute([
             'email' => 'admin@email.com',
-            'password' => 'Password123)'
+            'password' => 'Password123)',
         ]);
 
         $commandTester->assertCommandIsSuccessful();
@@ -83,7 +83,7 @@ class AdminCreateFirstCommandTest extends KernelTestCase
         $commandTester->execute([
             'name' => 'Wouter',
             'email' => 'newadmin@email.com',
-            'password' => 'Password123)'
+            'password' => 'Password123)',
         ]);
 
         self::assertEquals(Command::FAILURE, $commandTester->getStatusCode());

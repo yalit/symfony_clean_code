@@ -7,9 +7,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class VoterSpecificationVerifier implements SpecificationVerifierInterface
 {
-    public function __construct(private readonly Security $security)
-    {
-    }
+    public function __construct(private readonly Security $security) {}
 
     /**
      * @inheritDoc

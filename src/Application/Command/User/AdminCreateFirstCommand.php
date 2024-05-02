@@ -6,6 +6,8 @@ use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Model\Enum\UserRole;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,9 +37,9 @@ class AdminCreateFirstCommand extends Command
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-       $this->verifyArgumentPresent($input, $output, 'name');
-       $this->verifyArgumentPresent($input, $output, 'email');
-       $this->verifyArgumentPresent($input, $output, 'password');
+        $this->verifyArgumentPresent($input, $output, 'name');
+        $this->verifyArgumentPresent($input, $output, 'email');
+        $this->verifyArgumentPresent($input, $output, 'password');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -48,7 +50,7 @@ class AdminCreateFirstCommand extends Command
         $password = $input->getArgument('password');
 
         $input = new CreateUserInput($name, $email, $password, UserRole::ADMIN);
-        try{
+        try {
             $this->messageBus->dispatch($input);
         } catch (\Exception $e) {
             $io->error($e->getMessage());
@@ -66,11 +68,13 @@ class AdminCreateFirstCommand extends Command
         }
 
         $question = new Question(sprintf("%s should be defined. Please enter the correct value : ", $argument));
-        $value = $this->getHelper('question')->ask($input, $output, $question);
+        /** @var QuestionHelper $helper */
+        $helper = $this->getHelper('question');
+        $value = $helper->ask($input, $output, $question);
 
         while (empty($value)) {
             $output->writeln("Value cannot be empty");
-            $value = $this->getHelper('question')->ask($input, $output, $question);
+            $value = $helper->ask($input, $output, $question);
         }
 
         $input->setArgument($argument, $value);

@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class SpecificationManagerTest extends KernelTestCase
 {
-    private readonly SpecificationManagerInterface $specificationManager;
+    private SpecificationManagerInterface $specificationManager;
     protected function setUp(): void
     {
         self::bootKernel();

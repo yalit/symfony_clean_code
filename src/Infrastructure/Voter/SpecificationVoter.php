@@ -8,12 +8,12 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+/**
+ * @template-extends Voter<string, SpecificationInterface>
+ */
 class SpecificationVoter extends Voter
 {
-
-    public function __construct(private readonly SpecificationManagerInterface $specificationManager)
-    {
-    }
+    public function __construct(private readonly SpecificationManagerInterface $specificationManager) {}
 
     /**
      * @inheritDoc
