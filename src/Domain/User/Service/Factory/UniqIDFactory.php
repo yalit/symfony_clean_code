@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\User\Model\Factory;
+namespace App\Domain\User\Service\Factory;
 
 final class UniqIDFactory
 {

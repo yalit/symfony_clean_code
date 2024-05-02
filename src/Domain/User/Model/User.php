@@ -19,7 +19,7 @@ class User
         private string $name,
         private string $email,
         private UserRole $role,
-        private string $password,
+        private ?string $password = null,
     ) {}
 
     public function __toString(): string
@@ -62,12 +62,12 @@ class User
         $this->role = $role;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): void
+    public function setPassword(?string $password): void
     {
         $this->password = $password;
     }

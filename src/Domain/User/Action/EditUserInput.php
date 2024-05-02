@@ -13,6 +13,7 @@ class EditUserInput implements ActionInput
     public function __construct(
         private readonly User $user,
         private readonly array $data,
+        private readonly ?string $newPassword = null,
     ) {}
 
     public function getUser(): User
@@ -26,5 +27,10 @@ class EditUserInput implements ActionInput
     public function getData(): array
     {
         return $this->data;
+    }
+
+    public function getNewPassword(): ?string
+    {
+        return $this->newPassword;
     }
 }

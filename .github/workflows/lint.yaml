@@ -65,13 +65,12 @@ jobs:
         run: composer validate --strict
 
       - name: Download Symfony CLI
-        if: always() && steps.install.outcome == 'success'
+        id: symfony-cli
         run: wget https://get.symfony.com/cli/installer -O - | bash && mv /home/runner/.symfony5/bin/symfony /usr/local/bin/symfony
 
       - name: Check if any dependencies are compromised
-        if: always() && steps.install.outcome == 'success'
+        if: always() && steps.symfony-cli.outcome == 'success'
         run: /usr/local/bin/symfony check:security
 
       - name: Run phpstan
-        if: always() && steps.install.outcome == 'success'
         run: ./ci/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.config.php

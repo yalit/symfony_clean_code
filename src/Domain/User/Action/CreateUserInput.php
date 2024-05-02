@@ -11,7 +11,7 @@ class CreateUserInput implements ActionInput
     public function __construct(
         private readonly string   $name,
         private readonly string   $email,
-        private readonly string   $password,
+        private readonly string   $plainPassword,
         private readonly UserRole $role,
     ) {}
 
@@ -25,9 +25,9 @@ class CreateUserInput implements ActionInput
         return $this->email;
     }
 
-    public function getPassword(): string
+    public function getPlainPassword(): string
     {
-        return $this->password;
+        return $this->plainPassword;
     }
 
     public function getRole(): UserRole

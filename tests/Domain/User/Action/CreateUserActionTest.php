@@ -9,25 +9,32 @@ use App\Domain\User\Action\CreateUserAction;
 use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\User;
+use App\Domain\User\Service\Factory\UserFactory;
+use App\Domain\User\Service\PasswordHasherInterface;
 use App\Domain\User\Specification\UserUniqueEmailSpecification;
 use App\Tests\Domain\Shared\Specification\TestSpecificationVerifier;
 use App\Tests\Domain\User\Repository\DomainTestUserFixtures;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
+use App\Tests\Domain\User\Service\TestPasswordHasher;
 use PHPUnit\Framework\TestCase;
 
 class CreateUserActionTest extends TestCase
 {
     private SpecificationVerifierInterface $specificationVerifier;
     private InMemoryTestUserRepository $userRepository;
+    private PasswordHasherInterface $passwordHasher;
+    private UserFactory $userFactory;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->specificationVerifier = new TestSpecificationVerifier();
         $this->userRepository = new InMemoryTestUserRepository();
+        $this->passwordHasher = new TestPasswordHasher();
+        $this->userFactory = new UserFactory($this->passwordHasher);
 
         //load fixtures
-        (new DomainTestUserFixtures($this->userRepository))->load();
+        (new DomainTestUserFixtures($this->userRepository, $this->userFactory))->load();
         $this->userRepository->setCurrentUser($this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
     }
 
@@ -51,7 +58,7 @@ class CreateUserActionTest extends TestCase
             'role' => $role,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
+        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier, $this->userFactory);
         $command($commandInput);
 
         $users = $this->userRepository->findAll();
@@ -62,6 +69,9 @@ class CreateUserActionTest extends TestCase
         self::assertEquals($name, $user->getName());
         self::assertEquals($email, $user->getEmail());
         self::assertEquals($role, $user->getRole());
+
+        self::assertNotEquals($password, $user->getPassword());
+        self::assertTrue($this->passwordHasher->isPasswordValid($password, $user));
     }
 
     /**
@@ -84,7 +94,7 @@ class CreateUserActionTest extends TestCase
             'role' => UserRole::ADMIN,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
+        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier, $this->userFactory);
         $this->expectException(InvalidRequester::class);
         $command($commandInput);
     }
@@ -107,7 +117,7 @@ class CreateUserActionTest extends TestCase
             'role' => UserRole::ADMIN,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
+        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier, $this->userFactory);
         $this->expectException(InvalidRequester::class);
         $command($commandInput);
     }
@@ -130,7 +140,7 @@ class CreateUserActionTest extends TestCase
             'role' => UserRole::ADMIN,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier);
+        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier, $this->userFactory);
         $this->expectException(InvalidSpecification::class);
         $command($commandInput);
 
