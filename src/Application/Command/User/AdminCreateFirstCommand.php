@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Command;
+namespace App\Application\Command\User;
 
 use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Model\Enum\UserRole;
@@ -8,7 +8,6 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -55,7 +54,8 @@ class AdminCreateFirstCommand extends Command
             $io->error($e->getMessage());
             return Command::FAILURE;
         }
-        $this->messageBus->dispatch($input);
+
+        $io->success(sprintf('Admin created successfully. Name: %s, Email: %s', $name, $email));
         return Command::SUCCESS;
     }
 
