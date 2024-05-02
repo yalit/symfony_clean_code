@@ -36,7 +36,7 @@ class EditUserActionTest extends TestCase
         $user = $this->userRepository->getOneByEmail($userEmail);
 
         $editUserAction = new EditUserAction($this->userRepository);
-        $editUserAction->execute($this->getEditUserInput($userEmail, $data));
+        $editUserAction($this->getEditUserInput($userEmail, $data));
         $updatedUser = $this->userRepository->getOneById($user->getId());
         foreach ($data as $key => $value) {
             $getter = 'get' . ucfirst($key);
@@ -56,7 +56,7 @@ class EditUserActionTest extends TestCase
         $this->userRepository->setCurrentUser($user);
 
         $editUserAction = new EditUserAction($this->userRepository);
-        $editUserAction->execute($this->getEditUserInput($userEmail, $data));
+        $editUserAction($this->getEditUserInput($userEmail, $data));
 
         $updatedUser = $this->userRepository->getOneById($user->getId());
         foreach ($data as $key => $value) {
@@ -79,7 +79,7 @@ class EditUserActionTest extends TestCase
     {
         $user = $this->userRepository->getOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
         $editUserAction = new EditUserAction($this->userRepository);
-        $editUserAction->execute($this->getEditUserInput(DomainTestUserFixtures::EDITOR_EMAIL, ['non_existing_data' => 'notChanged']));
+        $editUserAction($this->getEditUserInput(DomainTestUserFixtures::EDITOR_EMAIL, ['non_existing_data' => 'notChanged']));
         $updateUser = $this->userRepository->getOneById($user->getId());
         self::assertNotEquals('notChanged', $updateUser->getName());
         self::assertNotEquals('notChanged', $updateUser->getEmail());
@@ -92,7 +92,7 @@ class EditUserActionTest extends TestCase
         $editUserAction = new EditUserAction($this->userRepository);
 
         $this->expectException(InvalidRequester::class);
-        $editUserAction->execute($this->getEditUserInput(DomainTestUserFixtures::EDITOR_EMAIL, ['name' => 'New Editor Name']));
+        $editUserAction($this->getEditUserInput(DomainTestUserFixtures::EDITOR_EMAIL, ['name' => 'New Editor Name']));
 
         $updateUser = $this->userRepository->getOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
         self::assertNotEquals('New Editor Name', $updateUser->getName());
@@ -105,7 +105,7 @@ class EditUserActionTest extends TestCase
         $editUserAction = new EditUserAction($this->userRepository);
 
         $this->expectException(InvalidRequester::class);
-        $editUserAction->execute($this->getEditUserInput(DomainTestUserFixtures::EDITOR_EMAIL, ['name' => 'New Editor Name']));
+        $editUserAction($this->getEditUserInput(DomainTestUserFixtures::EDITOR_EMAIL, ['name' => 'New Editor Name']));
 
         $updateUser = $this->userRepository->getOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
         self::assertNotEquals('New Editor Name', $updateUser->getName());

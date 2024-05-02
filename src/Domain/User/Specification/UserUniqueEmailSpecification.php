@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\User\Model\Specification;
+namespace App\Domain\User\Specification;
 
 use App\Domain\Shared\Specification\SpecificationInterface;
 use App\Domain\User\Model\User;

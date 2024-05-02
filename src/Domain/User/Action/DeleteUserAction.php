@@ -15,10 +15,9 @@ class DeleteUserAction implements Action
     public function __construct(private readonly UserRepositoryInterface $userRepository) {}
 
     /**
-     * @param DeleteUserInput $input
      * @throws InvalidRequester
      */
-    public function execute(ActionInput $input): ?ActionOutput
+    public function __invoke(DeleteUserInput $input): ?ActionOutput
     {
         if (!$this->isAllowed($input->getUser())) {
             throw new InvalidRequester();

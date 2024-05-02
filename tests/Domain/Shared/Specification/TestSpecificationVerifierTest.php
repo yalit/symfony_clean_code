@@ -3,6 +3,7 @@
 namespace App\Tests\Domain\Shared\Specification;
 
 use App\Domain\Shared\Specification\SpecificationVerifierInterface;
+use App\Tests\Shared\Specification\TestEvenSpecification;
 use PHPUnit\Framework\TestCase;
 
 class TestSpecificationVerifierTest extends TestCase

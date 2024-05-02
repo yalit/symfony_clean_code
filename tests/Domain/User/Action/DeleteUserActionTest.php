@@ -37,7 +37,7 @@ class DeleteUserActionTest extends TestCase
         $userId = $user->getId();
 
         $deleteUserAction = new DeleteUserAction($this->userRepository);
-        $deleteUserAction->execute($this->getDeleteUserInput($userEmail));
+        $deleteUserAction($this->getDeleteUserInput($userEmail));
 
         $this->assertNull($this->userRepository->getOneById($userId));
     }
@@ -49,7 +49,7 @@ class DeleteUserActionTest extends TestCase
 
         $deleteUserAction = new DeleteUserAction($this->userRepository);
         $this->expectException(InvalidRequester::class);
-        $deleteUserAction->execute($this->getDeleteUserInput(DomainTestUserFixtures::ADMIN_EMAIL));
+        $deleteUserAction($this->getDeleteUserInput(DomainTestUserFixtures::ADMIN_EMAIL));
 
         self::assertNotNull($this->userRepository->getOneById($userId));
     }

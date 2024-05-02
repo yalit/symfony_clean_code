@@ -2,9 +2,7 @@
 
 namespace App\Tests\Domain\Shared\Specification;
 
-use App\Domain\User\Model\Factory\UserFactory;
-use App\Domain\User\Model\Specification\UserUniqueEmailSpecification;
-use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
+use App\Tests\Shared\Specification\TestEvenSpecification;
 use PHPUnit\Framework\TestCase;
 
 class TestEvenSpecificationTest extends TestCase
