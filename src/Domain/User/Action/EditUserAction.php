@@ -9,10 +9,14 @@ use App\Domain\Shared\Exception\InvalidRequester;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Domain\User\Service\PasswordHasherInterface;
 
 class EditUserAction implements Action
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository) {}
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly PasswordHasherInterface $passwordHasher,
+    ) {}
 
     /**
      * @throws InvalidRequester
@@ -31,6 +35,11 @@ class EditUserAction implements Action
                 $user->$setter($value);
                 $changed = true;
             }
+        }
+
+        if ($input->getNewPassword() !== null) {
+            $user->setPassword($this->passwordHasher->hash($input->getNewPassword(), $user));
+            $changed = true;
         }
 
         if ($changed) {

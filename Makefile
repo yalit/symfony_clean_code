@@ -53,6 +53,7 @@ require-dev: ## Require a new package
 ## —— Doctrine ————————————————————————————————————————————————————————————
 db-create: db-drop ## Create the database
 	${CONSOLE} doctrine:database:create --env=dev
+	${CONSOLE} doctrine:migration:migrate --no-interaction --env=dev
 
 db-drop: ## Drop the database
 	${CONSOLE} doctrine:database:drop --force --env=dev
@@ -60,7 +61,7 @@ db-drop: ## Drop the database
 db-update: ## Update the database
 	${CONSOLE} doctrine:schema:update --force --env=dev
 
-db-fixtures: db-create db-update ## Load fixtures into the database
+fixtures: db-create db-update ## Load fixtures into the database
 	${CONSOLE} doctrine:fixtures:load --no-interaction --env=dev
 
 migration: ## Create a new migration
@@ -75,6 +76,7 @@ tests-prepare: ## Prepare the test environment (database / fixtures)
 	${CONSOLE} doctrine:database:create --env=test
 	${CONSOLE} doctrine:schema:update --force --env=test
 	${CONSOLE} doctrine:fixtures:load --no-interaction --env=test
+	${DOCKER_EXEC} chmod 777 var/data.db
 
 tests: ## Launch the tests
 	${DOCKER_EXEC} bin/phpunit

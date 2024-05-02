@@ -8,8 +8,10 @@ use App\Domain\User\Action\DeleteUserInput;
 use App\Domain\User\Action\EditUserAction;
 use App\Domain\User\Action\EditUserInput;
 use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Domain\User\Service\Factory\UserFactory;
 use App\Tests\Domain\User\Repository\DomainTestUserFixtures;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
+use App\Tests\Domain\User\Service\TestPasswordHasher;
 use PHPUnit\Framework\TestCase;
 
 class DeleteUserActionTest extends TestCase
@@ -19,7 +21,7 @@ class DeleteUserActionTest extends TestCase
     public function setUp(): void
     {
         $this->userRepository = new InMemoryTestUserRepository();
-        (new DomainTestUserFixtures($this->userRepository))->load();
+        (new DomainTestUserFixtures($this->userRepository, new UserFactory(new TestPasswordHasher())))->load();
         $this->userRepository->setCurrentUser($this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
     }
 
