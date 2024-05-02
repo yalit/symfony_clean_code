@@ -3,6 +3,7 @@
 namespace App\Tests\Domain\Shared\Specification;
 
 use App\Domain\Shared\Specification\SpecificationVerifierInterface;
+use App\Tests\Shared\Specification\NotExistingSpecification;
 use App\Tests\Shared\Specification\TestEvenSpecification;
 use PHPUnit\Framework\TestCase;
 
@@ -18,19 +19,11 @@ class TestSpecificationVerifierTest extends TestCase
 
     public function testExistingSatisfiedSpecification(): void
     {
-        $this->specificationVerifier->addSpecification(new TestEvenSpecification());
-
-        self::assertTrue($this->specificationVerifier->satisfies([TestEvenSpecification::class], 2));
+        self::assertTrue($this->specificationVerifier->satisfies([new TestEvenSpecification()], 2));
     }
 
     public function testExistingNotSatisfiedSpecification(): void
     {
-        $this->specificationVerifier->addSpecification(new TestEvenSpecification());
-        self::assertFalse($this->specificationVerifier->satisfies([TestEvenSpecification::class], 1));
-    }
-
-    public function testNonExistingSpecification(): void
-    {
-        self::assertFalse($this->specificationVerifier->satisfies([TestEvenSpecification::class], 2));
+        self::assertFalse($this->specificationVerifier->satisfies([new TestEvenSpecification()], 1));
     }
 }

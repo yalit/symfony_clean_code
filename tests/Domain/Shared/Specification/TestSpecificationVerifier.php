@@ -7,6 +7,9 @@ use App\Domain\Shared\Specification\SpecificationVerifierInterface;
 
 class TestSpecificationVerifier implements SpecificationVerifierInterface
 {
+    /** @var SpecificationInterface[] $specifications */
+    public array $specifications = [];
+
     public function satisfies(array $specifications, $object): bool
     {
         foreach ($specifications as $specification) {
@@ -16,5 +19,10 @@ class TestSpecificationVerifier implements SpecificationVerifierInterface
         }
 
         return true;
+    }
+
+    public function addSpecification(SpecificationInterface $specification): void
+    {
+        $this->specifications[$specification::class] = $specification;
     }
 }
