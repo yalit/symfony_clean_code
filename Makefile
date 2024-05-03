@@ -10,7 +10,7 @@ export GROUP_ID
 PHP_CONTAINER = hexa-php
 
 DOCKER = docker
-DOCKER_EXEC = ${DOCKER} exec -it ${PHP_CONTAINER}
+DOCKER_EXEC = ${DOCKER} exec -it --user user ${PHP_CONTAINER}
 SYMFONY =  ${DOCKER_EXEC} symfony
 CONSOLE = ${DOCKER_EXEC} bin/console
 COMPOSER = ${DOCKER_EXEC} composer
