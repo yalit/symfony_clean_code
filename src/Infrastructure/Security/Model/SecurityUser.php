@@ -10,7 +10,7 @@ class SecurityUser extends User implements UserInterface, PasswordAuthenticatedU
 {
     public function getRoles(): array
     {
-        return [$this->getRole()];
+        return [$this->getRole()->value, 'ROLE_USER'];
     }
 
     public function eraseCredentials(): void

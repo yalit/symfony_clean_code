@@ -26,7 +26,7 @@ class UserRepositoryTest extends RepositoryKernelTestCase
         $authorName = $author->getName();
         $authorEmail = $author->getEmail();
 
-        $foundUser = $this->repository->getOneById($authorId);
+        $foundUser = $this->repository->findOneById($authorId);
         self::assertNotNull($foundUser);
         self::assertEquals($authorId, $foundUser->getId());
         self::assertEquals($authorName, $foundUser->getName());
@@ -36,7 +36,7 @@ class UserRepositoryTest extends RepositoryKernelTestCase
     public function testGetOneByIdForUnknownIdReturnsNull(): void
     {
         $unknownId = 'unknown_id';
-        $foundUser = $this->repository->getOneById($unknownId);
+        $foundUser = $this->repository->findOneById($unknownId);
         self::assertNull($foundUser);
     }
 
@@ -76,7 +76,7 @@ class UserRepositoryTest extends RepositoryKernelTestCase
         $allNewExistingUsers = $this->repository->findAll();
         self::assertCount(count($allExistingUsers) - 1, $allNewExistingUsers);
 
-        $foundUser = $this->repository->getOneById($authorId);
+        $foundUser = $this->repository->findOneById($authorId);
         self::assertNull($foundUser);
     }
 }

@@ -22,7 +22,7 @@ class DeleteUserActionTest extends TestCase
     {
         $this->userRepository = new InMemoryTestUserRepository();
         (new DomainTestUserFixtures($this->userRepository, new UserFactory(new TestPasswordHasher())))->load();
-        $this->userRepository->setCurrentUser($this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
+        $this->userRepository->setCurrentUser($this->userRepository->findOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
     }
 
     protected function tearDown(): void
@@ -35,25 +35,25 @@ class DeleteUserActionTest extends TestCase
     /** @dataProvider getDeleteUserEmails */
     public function testDeleteUserActionOnNonSelfExistingUser(string $userEmail): void
     {
-        $user = $this->userRepository->getOneByEmail($userEmail);
+        $user = $this->userRepository->findOneByEmail($userEmail);
         $userId = $user->getId();
 
         $deleteUserAction = new DeleteUserAction($this->userRepository);
         $deleteUserAction($this->getDeleteUserInput($userEmail));
 
-        $this->assertNull($this->userRepository->getOneById($userId));
+        $this->assertNull($this->userRepository->findOneById($userId));
     }
 
     public function testDeleteUserActionOnSelfExistingUser(): void
     {
-        $user = $this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL);
+        $user = $this->userRepository->findOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL);
         $userId = $user->getId();
 
         $deleteUserAction = new DeleteUserAction($this->userRepository);
         $this->expectException(InvalidRequester::class);
         $deleteUserAction($this->getDeleteUserInput(DomainTestUserFixtures::ADMIN_EMAIL));
 
-        self::assertNotNull($this->userRepository->getOneById($userId));
+        self::assertNotNull($this->userRepository->findOneById($userId));
     }
 
     /**
@@ -68,7 +68,7 @@ class DeleteUserActionTest extends TestCase
     private function getDeleteUserInput(string $userEmail): DeleteUserInput
     {
         return new DeleteUserInput(
-            $this->userRepository->getOneByEmail($userEmail),
+            $this->userRepository->findOneByEmail($userEmail),
         );
     }
 }

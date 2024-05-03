@@ -87,12 +87,12 @@ class AdminCreateFirstCommandTest extends KernelTestCase
         ]);
 
         self::assertEquals(Command::FAILURE, $commandTester->getStatusCode());
-        self::assertNull($this->userRepository->getOneByEmail('newadmin@email.com'));
+        self::assertNull($this->userRepository->findOneByEmail('newadmin@email.com'));
     }
 
     private function assertCreateUserInDB(string $email, string $name): void
     {
-        $user = $this->userRepository->getOneByEmail($email);
+        $user = $this->userRepository->findOneByEmail($email);
         self::assertNotNull($user);
         self::assertEquals($name, $user->getName());
         self::assertEquals(UserRole::ADMIN, $user->getRole());

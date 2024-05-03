@@ -8,9 +8,9 @@ interface UserRepositoryInterface
 {
     public function save(User $user): void;
 
-    public function getOneById(string $id): ?User;
+    public function findOneById(string $id): ?User;
 
-    public function getOneByEmail(string $email): ?User;
+    public function findOneByEmail(string $email): ?User;
 
     /**
      * @return array<User>

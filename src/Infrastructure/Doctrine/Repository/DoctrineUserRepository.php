@@ -27,12 +27,12 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
         $this->getEntityManager()->flush();
     }
 
-    public function getOneById(string $id): ?User
+    public function findOneById(string $id): ?User
     {
         return $this->find($id);
     }
 
-    public function getOneByEmail(string $email): ?User
+    public function findOneByEmail(string $email): ?User
     {
         return $this->findOneBy(['email' => $email]);
     }
@@ -47,7 +47,7 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
 
     public function delete(string $id): void
     {
-        $this->getEntityManager()->remove($this->getOneById($id));
+        $this->getEntityManager()->remove($this->findOneById($id));
         $this->getEntityManager()->flush();
     }
 
