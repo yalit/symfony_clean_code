@@ -19,7 +19,7 @@ RUN apt install -yqq  libjpeg-dev libpng-dev libbz2-dev libxslt-dev libsodium-de
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 
 RUN groupadd -f -g $GROUP_ID user
-RUN useradd -u $USER_ID -g $GROUP_ID user
+RUN useradd -u $USER_ID -g $GROUP_ID -m user
 USER user
 
 ## Apache conf
@@ -39,3 +39,9 @@ COPY xdebug.ini /usr/local/etc/php/conf.d/
 ## Symfony CLI
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+
+## Node & pnpm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+RUN apt -yqq install nodejs \
+    && node -v \
+    && npm -v \
