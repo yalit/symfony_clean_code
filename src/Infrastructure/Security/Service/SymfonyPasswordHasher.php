@@ -4,7 +4,7 @@ namespace App\Infrastructure\Security\Service;
 
 use App\Domain\User\Model\User;
 use App\Domain\User\Service\PasswordHasherInterface;
-use App\Infrastructure\Security\Service\Model\Factory\SecurityUserFactory;
+use App\Infrastructure\Security\Factory\SecurityUserFactory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SymfonyPasswordHasher implements PasswordHasherInterface

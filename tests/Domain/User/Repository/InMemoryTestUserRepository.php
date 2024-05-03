@@ -19,12 +19,12 @@ class InMemoryTestUserRepository implements UserRepositoryInterface
         $this->users[$user->getId()] = $user;
     }
 
-    public function getOneById(string $id): ?User
+    public function findOneById(string $id): ?User
     {
         return $this->users[$id] ?? null;
     }
 
-    public function getOneByEmail(string $email): ?User
+    public function findOneByEmail(string $email): ?User
     {
         foreach ($this->users as $user) {
             if ($user->getEmail() === $email) {

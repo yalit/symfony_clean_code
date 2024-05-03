@@ -15,6 +15,6 @@ class UserUniqueEmailSpecification implements SpecificationInterface
      */
     public function isSatisfiedBy($object): bool
     {
-        return $this->userRepository->getOneByEmail($object->getEmail()) === null;
+        return $this->userRepository->findOneByEmail($object->getEmail()) === null;
     }
 }

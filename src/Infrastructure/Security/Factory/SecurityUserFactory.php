@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Security\Service\Model\Factory;
+namespace App\Infrastructure\Security\Factory;
 
 use App\Domain\User\Model\User;
-use App\Infrastructure\Security\Service\Model\SecurityUser;
+use App\Infrastructure\Security\Model\SecurityUser;
 
 class SecurityUserFactory
 {

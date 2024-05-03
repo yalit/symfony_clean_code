@@ -35,7 +35,7 @@ class CreateUserActionTest extends TestCase
 
         //load fixtures
         (new DomainTestUserFixtures($this->userRepository, $this->userFactory))->load();
-        $this->userRepository->setCurrentUser($this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
+        $this->userRepository->setCurrentUser($this->userRepository->findOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
     }
 
     protected function tearDown(): void
@@ -63,7 +63,7 @@ class CreateUserActionTest extends TestCase
 
         $users = $this->userRepository->findAll();
         self::assertCount($originalUserCount + 1, $users);
-        $user = $this->userRepository->getOneByEmail($email);
+        $user = $this->userRepository->findOneByEmail($email);
         self::assertNotNull($user);
         self::assertInstanceOf(User::class, $user);
         self::assertEquals($name, $user->getName());
@@ -104,7 +104,7 @@ class CreateUserActionTest extends TestCase
      */
     public function testCreateUserCommandWithAnIncorrectRequesterShouldTriggerAnException(string $requesterEmail): void
     {
-        $requester = $this->userRepository->getOneByEmail($requesterEmail);
+        $requester = $this->userRepository->findOneByEmail($requesterEmail);
         self::assertNotNull($requester);
         self::assertNotEquals(UserRole::ADMIN, $requester->getRole());
 
