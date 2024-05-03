@@ -47,6 +47,13 @@ jobs:
       - name: Install Composer dependencies
         run: composer install
 
+      ## —— Node 🗄️ ————————————————————————————————————————————————————————
+      - name: Install Frontend dependencies
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+        run: npm install && npm run build
+
       ## —— Tests ✅ ———————————————————————————————————————————————————————————
       - name : Setup test environment
         run: |
