@@ -10,10 +10,11 @@ export GROUP_ID
 PHP_CONTAINER = hexa-php
 
 DOCKER = docker
-DOCKER_EXEC = ${DOCKER} exec -it ${PHP_CONTAINER}
+DOCKER_EXEC = ${DOCKER} exec -it --user user ${PHP_CONTAINER}
 SYMFONY =  ${DOCKER_EXEC} symfony
 CONSOLE = ${DOCKER_EXEC} bin/console
 COMPOSER = ${DOCKER_EXEC} composer
+FRONT_EXEC = ${DOCKER_EXEC} npm
 
 VERSION := $(shell $$SHELL -c 'echo $$ZSH_VERSION')
 read_param = $(if $(2), $(shell echo $(2)), $(if $(strip $VERSION), $(shell $$SHELL -c 'read param\?"$(1) : "; echo $$param'), $(shell $$SHELL -c 'read "$(1) : " param; echo $$param')))
@@ -50,6 +51,24 @@ require: ## Require a new package
 require-dev: ## Require a new package
 	${COMPOSER} require --dev $(filter-out $@,$(MAKECMDGOALS))
 
+## —— Frontend ————————————————————————————————————————————————————————————
+front-install: ## Install the project dependencies
+	${FRONT_EXEC} install
+
+front-require: ## Require a new package
+	${FRONT_EXEC} install $(filter-out $@,$(MAKECMDGOALS))
+
+front-require-dev: ## Require a new package
+	${FRONT_EXEC} install --save-dev $(filter-out $@,$(MAKECMDGOALS))
+
+front-build-dev: ## Build the assets in dev mode
+	${FRONT_EXEC} run dev
+
+front-watch: ## Watch the assets
+	${FRONT_EXEC} run watch
+
+front-build-prod: ## Build the assets in prod mode
+	${FRONT_EXEC} run build
 ## —— Doctrine ————————————————————————————————————————————————————————————
 db-create: db-drop ## Create the database
 	${CONSOLE} doctrine:database:create --env=dev
