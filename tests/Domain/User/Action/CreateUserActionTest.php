@@ -2,47 +2,56 @@
 
 namespace App\Tests\Domain\User\Action;
 
+use App\Domain\User\Rule\UserUniqueEmailRuleValidator;
 use App\Domain\Shared\Exception\InvalidRequester;
-use App\Domain\Shared\Exception\InvalidSpecification;
-use App\Domain\Shared\Specification\SpecificationVerifierInterface;
+use App\Domain\Shared\ServiceFetcherInterface;
+use App\Domain\Shared\Validation\Validator;
+use App\Domain\Shared\Validation\ValidatorInterface;
 use App\Domain\User\Action\CreateUserAction;
 use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\User;
 use App\Domain\User\Service\Factory\UserFactory;
 use App\Domain\User\Service\PasswordHasherInterface;
-use App\Domain\User\Specification\UserUniqueEmailSpecification;
-use App\Tests\Domain\Shared\Specification\TestSpecificationVerifier;
 use App\Tests\Domain\User\Repository\DomainTestUserFixtures;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
 use App\Tests\Domain\User\Service\TestPasswordHasher;
+use App\Tests\Shared\Service\TestServiceFetcher;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class CreateUserActionTest extends TestCase
 {
-    private SpecificationVerifierInterface $specificationVerifier;
     private InMemoryTestUserRepository $userRepository;
     private PasswordHasherInterface $passwordHasher;
     private UserFactory $userFactory;
+    private ServiceFetcherInterface $serviceFetcher;
+    private ValidatorInterface $validator;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->specificationVerifier = new TestSpecificationVerifier();
         $this->userRepository = new InMemoryTestUserRepository();
         $this->passwordHasher = new TestPasswordHasher();
         $this->userFactory = new UserFactory($this->passwordHasher);
+        $this->serviceFetcher = new TestServiceFetcher();
+        $this->validator = new Validator($this->serviceFetcher);
 
         //load fixtures
         (new DomainTestUserFixtures($this->userRepository, $this->userFactory))->load();
         $this->userRepository->setCurrentUser($this->userRepository->findOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
+
+        $this->serviceFetcher->addService(UserUniqueEmailRuleValidator::class, new UserUniqueEmailRuleValidator($this->userRepository));
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
         unset($this->userRepository);
-        unset($this->specificationVerifier);
+        unset($this->passwordHasher);
+        unset($this->userFactory);
+        unset($this->serviceFetcher);
+        unset($this->validator);
     }
 
     /**
@@ -58,7 +67,7 @@ class CreateUserActionTest extends TestCase
             'role' => $role,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier, $this->userFactory);
+        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory);
         $command($commandInput);
 
         $users = $this->userRepository->findAll();
@@ -94,7 +103,7 @@ class CreateUserActionTest extends TestCase
             'role' => UserRole::ADMIN,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier, $this->userFactory);
+        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory);
         $this->expectException(InvalidRequester::class);
         $command($commandInput);
     }
@@ -117,7 +126,7 @@ class CreateUserActionTest extends TestCase
             'role' => UserRole::ADMIN,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier, $this->userFactory);
+        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory);
         $this->expectException(InvalidRequester::class);
         $command($commandInput);
     }
@@ -140,11 +149,11 @@ class CreateUserActionTest extends TestCase
             'role' => UserRole::ADMIN,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->specificationVerifier, $this->userFactory);
-        $this->expectException(InvalidSpecification::class);
+        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory);
+        $this->expectException(InvalidArgumentException::class);
         $command($commandInput);
 
-        self::assertStringContainsString(UserUniqueEmailSpecification::class, $this->getExpectedExceptionMessage());
+        self::assertStringContainsString(UserUniqueEmailRule::class, $this->getExpectedExceptionMessage());
         self::assertStringContainsString('Test Admin', $this->getExpectedExceptionMessage());
         self::assertStringContainsString('admin@email.com', $this->getExpectedExceptionMessage());
     }

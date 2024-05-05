@@ -5,7 +5,9 @@ namespace App\Domain\User\Action;
 use App\Domain\Shared\Action\ActionInput;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\User;
+use App\Domain\User\Rule\UserUniqueEmailRule;
 
+#[UserUniqueEmailRule]
 class CreateUserInput implements ActionInput
 {
     public function __construct(

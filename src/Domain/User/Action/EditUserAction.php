@@ -26,6 +26,7 @@ class EditUserAction implements Action
         if (!$this->isAllowed($input->getUser())) {
             throw new InvalidRequester();
         }
+        //TODO : add validator
 
         $changed = false;
         $user = $input->getUser();

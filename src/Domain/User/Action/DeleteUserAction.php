@@ -22,6 +22,7 @@ class DeleteUserAction implements Action
         if (!$this->isAllowed($input->getUser())) {
             throw new InvalidRequester();
         }
+        //TODO : add validator
 
         $this->userRepository->delete($input->getUser()->getId());
 
