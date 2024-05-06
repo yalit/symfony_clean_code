@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Tests\Domain\User\Model\Specification;
+namespace App\Tests\Domain\User\Rule;
 
+use App\Domain\User\Rule\UserUniqueEmailRule;
+use App\Domain\User\Rule\UserUniqueEmailRuleValidator;
 use App\Domain\User\Service\Factory\UserFactory;
-use App\Domain\User\Specification\UserUniqueEmailSpecification;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
 use App\Tests\Domain\User\Service\TestPasswordHasher;
 use PHPUnit\Framework\TestCase;
 
-class UserUniqueEmailSpecificationTest extends TestCase
+class UserUniqueEmailRuleValidatorTest extends TestCase
 {
     private UserFactory $userFactory;
 
@@ -20,10 +21,10 @@ class UserUniqueEmailSpecificationTest extends TestCase
     public function testIsSatisfiedByWithNoExistingUsers(): void
     {
         $userRepository = new InMemoryTestUserRepository();
-        $specification = new UserUniqueEmailSpecification($userRepository);
+        $validator = new UserUniqueEmailRuleValidator($userRepository);
 
         $testUser = $this->userFactory->createAdmin('other', 'another@email.com', 'Password123)');
-        self::assertTrue($specification->isSatisfiedBy($testUser));
+        self::assertTrue($validator->isValid($testUser, new UserUniqueEmailRule()));
     }
 
 
@@ -32,10 +33,10 @@ class UserUniqueEmailSpecificationTest extends TestCase
         $userRepository = new InMemoryTestUserRepository();
         $userRepository->save($this->userFactory->createAdmin('Admin', 'admin@email.com', 'Password123)'));
 
-        $specification = new UserUniqueEmailSpecification($userRepository);
+        $validator = new UserUniqueEmailRuleValidator($userRepository);
 
         $testUser = $this->userFactory->createAdmin('other', 'another@email.com', 'Password123)');
-        self::assertTrue($specification->isSatisfiedBy($testUser));
+        self::assertTrue($validator->isValid($testUser, new UserUniqueEmailRule()));
     }
 
     public function testIsNotSatisfiedByExistingEmail(): void
@@ -43,9 +44,9 @@ class UserUniqueEmailSpecificationTest extends TestCase
         $userRepository = new InMemoryTestUserRepository();
         $userRepository->save($this->userFactory->createAdmin('Admin', 'admin@email.com', 'Password123)'));
 
-        $specification = new UserUniqueEmailSpecification($userRepository);
+        $validator = new UserUniqueEmailRuleValidator($userRepository);
 
         $testUser = $this->userFactory->createAdmin('other', 'admin@email.com', 'Password123)');
-        self::assertFalse($specification->isSatisfiedBy($testUser));
+        self::assertFalse($validator->isValid($testUser, new UserUniqueEmailRule()));
     }
 }

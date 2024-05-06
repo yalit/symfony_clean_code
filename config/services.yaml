@@ -35,7 +35,7 @@ services:
         App\Domain\Shared\Action\Action:
             tags:
                 - name: messenger.message_handler
+        App\Domain\Shared\Validation\Rule\RuleValidatorInterface:
+            public: true
 
-        App\Domain\Shared\Specification\SpecificationInterface:
-            tags:
-                - name: domain.specification
+    Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'

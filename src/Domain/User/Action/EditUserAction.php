@@ -6,16 +6,19 @@ use App\Domain\Shared\Action\Action;
 use App\Domain\Shared\Action\ActionInput;
 use App\Domain\Shared\Action\ActionOutput;
 use App\Domain\Shared\Exception\InvalidRequester;
+use App\Domain\Shared\Validation\ValidatorInterface;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\Service\PasswordHasherInterface;
+use InvalidArgumentException;
 
 class EditUserAction implements Action
 {
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
         private readonly PasswordHasherInterface $passwordHasher,
+        private readonly ValidatorInterface $validator,
     ) {}
 
     /**
@@ -25,6 +28,10 @@ class EditUserAction implements Action
     {
         if (!$this->isAllowed($input->getUser())) {
             throw new InvalidRequester();
+        }
+
+        if (!$this->validator->isValid($input)) {
+            throw new InvalidArgumentException('Invalid input data for EditUserAction');
         }
 
         $changed = false;

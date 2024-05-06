@@ -2,12 +2,9 @@
 
 namespace App\Tests\Infrastructure\Unit\Security\Provider;
 
-use App\Domain\Shared\Specification\SpecificationVerifierInterface;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
-use App\Domain\User\Service\PasswordHasherInterface;
-use App\Infrastructure\Security\Factory\SecurityUserFactory;
 use App\Infrastructure\Security\Provider\SecurityUserProvider;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
 use App\Tests\Domain\User\Service\TestPasswordHasher;
