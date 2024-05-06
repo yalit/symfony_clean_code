@@ -6,7 +6,6 @@ use App\Domain\Shared\Validation\Rule\RuleInterface;
 use App\Domain\Shared\Validation\Rule\RuleValidatorInterface;
 use App\Domain\User\Repository\UserRepositoryInterface;
 
-//TODO : implement a test
 class UserUniqueDataEmailRuleValidator implements RuleValidatorInterface
 {
     public function __construct(private readonly UserRepositoryInterface $userRepository)

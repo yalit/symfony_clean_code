@@ -9,7 +9,7 @@ use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
 use App\Tests\Domain\User\Service\TestPasswordHasher;
 use PHPUnit\Framework\TestCase;
 
-class UserUniqueEmailRuleTest extends TestCase
+class UserUniqueEmailRuleValidatorTest extends TestCase
 {
     private UserFactory $userFactory;
 
