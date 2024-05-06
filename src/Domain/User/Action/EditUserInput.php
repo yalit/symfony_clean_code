@@ -4,7 +4,9 @@ namespace App\Domain\User\Action;
 
 use App\Domain\Shared\Action\ActionInput;
 use App\Domain\User\Model\User;
+use App\Domain\User\Rule\UserUniqueDataEmailRule;
 
+#[UserUniqueDataEmailRule]
 class EditUserInput implements ActionInput
 {
     /**
