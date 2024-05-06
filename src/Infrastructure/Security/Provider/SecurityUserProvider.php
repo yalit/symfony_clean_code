@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Security\Provider;
 
 use App\Domain\User\Repository\UserRepositoryInterface;
-use App\Domain\User\Service\PasswordHasherInterface;
 use App\Infrastructure\Security\Factory\SecurityUserFactory;
 use App\Infrastructure\Security\Model\SecurityUser;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -36,7 +35,7 @@ class SecurityUserProvider implements UserProviderInterface, PasswordUpgraderInt
 
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        $user = $this->userRepository->findOneByEmail($identifier);
+        $user = $this->userRepository->getOneByEmail($identifier);
 
         if ($user === null) {
             throw new \Exception('User not found');
@@ -50,7 +49,7 @@ class SecurityUserProvider implements UserProviderInterface, PasswordUpgraderInt
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        $domainUser = $this->userRepository->findOneByEmail($user->getUserIdentifier());
+        $domainUser = $this->userRepository->getOneByEmail($user->getUserIdentifier());
         $domainUser->setPassword($newHashedPassword);
         $this->userRepository->save($domainUser);
 

@@ -26,7 +26,7 @@ class CreateUserAuthorization implements AuthorizationInterface
         $user = $this->userRepository->getCurrentUser();
 
         if (!$user) {
-            return count($this->userRepository->findAll()) === 0;
+            return count($this->userRepository->getAll()) === 0;
         }
 
         return match ($user->getRole()) {

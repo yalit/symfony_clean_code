@@ -12,6 +12,6 @@ class UserUniqueEmailRuleValidator implements RuleValidatorInterface
 
     public function isValid($object, RuleInterface $rule): bool
     {
-        return $this->userRepository->findOneByEmail($object->getEmail()) === null;
+        return $this->userRepository->getOneByEmail($object->getEmail()) === null;
     }
 }

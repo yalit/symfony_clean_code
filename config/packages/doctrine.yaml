@@ -11,9 +11,9 @@ doctrine:
         mappings:
             DomainUser:
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Infrastructure/Doctrine/Mapping'
-                prefix: 'App\Domain\User\Model'
-                type: xml
+                dir: '%kernel.project_dir%/src/Infrastructure/Doctrine/Model'
+                prefix: 'App\Infrastructure\Doctrine\Model'
+                type: attribute
                 alias: App
 
 when@test:
