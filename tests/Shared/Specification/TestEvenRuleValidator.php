@@ -7,7 +7,6 @@ use App\Domain\Shared\Validation\Rule\RuleValidatorInterface;
 
 class TestEvenRuleValidator implements RuleValidatorInterface
 {
-
     public function isValid($object, RuleInterface $rule): bool
     {
         if (!$rule instanceof TestEvenRule) {

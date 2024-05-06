@@ -18,7 +18,7 @@ class EditUserAction implements Action
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
         private readonly PasswordHasherInterface $passwordHasher,
-        private readonly ValidatorInterface $validator
+        private readonly ValidatorInterface $validator,
     ) {}
 
     /**

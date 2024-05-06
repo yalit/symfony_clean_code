@@ -8,9 +8,7 @@ use App\Domain\User\Repository\UserRepositoryInterface;
 
 class UserUniqueEmailRuleValidator implements RuleValidatorInterface
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private readonly UserRepositoryInterface $userRepository) {}
 
     public function isValid($object, RuleInterface $rule): bool
     {

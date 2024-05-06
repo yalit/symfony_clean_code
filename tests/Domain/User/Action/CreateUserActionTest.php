@@ -2,6 +2,7 @@
 
 namespace App\Tests\Domain\User\Action;
 
+use App\Domain\User\Rule\UserUniqueEmailRule;
 use App\Domain\User\Rule\UserUniqueEmailRuleValidator;
 use App\Domain\Shared\Exception\InvalidRequester;
 use App\Domain\Shared\ServiceFetcherInterface;

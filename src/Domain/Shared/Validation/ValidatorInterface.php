@@ -4,5 +4,5 @@ namespace App\Domain\Shared\Validation;
 
 interface ValidatorInterface
 {
-    public function isValid($object): bool;
+    public function isValid(object $object): bool;
 }

@@ -7,9 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ContainerServiceFetcher implements ServiceFetcherInterface
 {
-    public function __construct(private readonly ContainerInterface $container)
-    {
-    }
+    public function __construct(private readonly ContainerInterface $container) {}
 
     public function fetch(string $service): ?object
     {

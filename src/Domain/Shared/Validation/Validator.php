@@ -9,11 +9,9 @@ use InvalidArgumentException;
 
 class Validator implements ValidatorInterface
 {
-    public function __construct(private readonly ServiceFetcherInterface $serviceFetcher)
-    {
-    }
+    public function __construct(private readonly ServiceFetcherInterface $serviceFetcher) {}
 
-    public function isValid($object): bool
+    public function isValid(object $object): bool
     {
         $rules = $this->getObjectRules($object);
 
@@ -32,10 +30,9 @@ class Validator implements ValidatorInterface
     }
 
     /**
-     * @param $object
      * @return RuleInterface[]
      */
-    private function getObjectRules($object): array
+    private function getObjectRules(object $object): array
     {
         $rules = [];
 

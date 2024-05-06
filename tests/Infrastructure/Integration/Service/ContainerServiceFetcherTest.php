@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ContainerServiceFetcherTest extends KernelTestCase
 {
-    public function testContainerServiceFetcher()
+    public function testContainerServiceFetcher(): void
     {
         self::bootKernel();
         $container = self::getContainer();
