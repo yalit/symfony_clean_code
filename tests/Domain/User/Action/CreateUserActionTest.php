@@ -2,6 +2,9 @@
 
 namespace App\Tests\Domain\User\Action;
 
+use App\Domain\Shared\Authorization\AuthorizationCheckerInterface;
+use App\Domain\User\Authorization\CreateUserAuthorization;
+use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\Rule\UserUniqueEmailRule;
 use App\Domain\User\Rule\UserUniqueEmailRuleValidator;
 use App\Domain\Shared\Exception\InvalidRequester;
@@ -14,6 +17,7 @@ use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\User;
 use App\Domain\User\Service\Factory\UserFactory;
 use App\Domain\User\Service\PasswordHasherInterface;
+use App\Tests\Domain\Shared\Authorization\TestAuthorizationChecker;
 use App\Tests\Domain\User\Repository\DomainTestUserFixtures;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
 use App\Tests\Domain\User\Service\TestPasswordHasher;
@@ -28,6 +32,7 @@ class CreateUserActionTest extends TestCase
     private UserFactory $userFactory;
     private ServiceFetcherInterface $serviceFetcher;
     private ValidatorInterface $validator;
+    private AuthorizationCheckerInterface $authorizationChecker;
 
     public function setUp(): void
     {
@@ -43,6 +48,9 @@ class CreateUserActionTest extends TestCase
         $this->userRepository->setCurrentUser($this->userRepository->findOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
 
         $this->serviceFetcher->addService(UserUniqueEmailRuleValidator::class, new UserUniqueEmailRuleValidator($this->userRepository));
+
+        $this->authorizationChecker = new TestAuthorizationChecker();
+        $this->authorizationChecker->addAuthorization(new CreateUserAuthorization($this->userRepository));
     }
 
     protected function tearDown(): void
@@ -53,6 +61,7 @@ class CreateUserActionTest extends TestCase
         unset($this->userFactory);
         unset($this->serviceFetcher);
         unset($this->validator);
+        unset($this->authorizationChecker);
     }
 
     /**
@@ -68,7 +77,7 @@ class CreateUserActionTest extends TestCase
             'role' => $role,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory);
+        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory, $this->authorizationChecker);
         $command($commandInput);
 
         $users = $this->userRepository->findAll();
@@ -104,7 +113,7 @@ class CreateUserActionTest extends TestCase
             'role' => UserRole::ADMIN,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory);
+        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory, $this->authorizationChecker);
         $this->expectException(InvalidRequester::class);
         $command($commandInput);
     }
@@ -127,7 +136,7 @@ class CreateUserActionTest extends TestCase
             'role' => UserRole::ADMIN,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory);
+        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory, $this->authorizationChecker);
         $this->expectException(InvalidRequester::class);
         $command($commandInput);
     }
@@ -150,7 +159,7 @@ class CreateUserActionTest extends TestCase
             'role' => UserRole::ADMIN,
         ]);
 
-        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory);
+        $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory, $this->authorizationChecker);
         $this->expectException(InvalidArgumentException::class);
         $command($commandInput);
 
