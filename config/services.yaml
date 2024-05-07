@@ -44,6 +44,10 @@ services:
             tags:
                 - { name: domain.authorization }
 
+        App\Infrastructure\Doctrine\Mapper\DoctrineMapperInterface:
+            public: true
+
     Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
     App\Infrastructure\Authorization\AuthorizationChecker:
         public: true
+

@@ -16,6 +16,10 @@ class DoctrineUserIdGenerator extends AbstractIdGenerator
      */
     public function generateId(EntityManagerInterface $em, $entity): string
     {
+        if(!property_exists($entity, 'id')) {
+            return UniqIDFactory::create($entity->getRole()->value);
+        }
+
         if ($entity->getId() !== null && str_starts_with($entity->getId(), $entity->getRole()->value)) {
             return $entity->getId();
         }

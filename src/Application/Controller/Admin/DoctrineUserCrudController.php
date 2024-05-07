@@ -5,13 +5,13 @@ namespace App\Application\Controller\Admin;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Infrastructure\Admin\Field\EnumField;
 use App\Infrastructure\Doctrine\Model\DoctrineUser;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-//TODO : add tests
 class DoctrineUserCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -25,6 +25,10 @@ class DoctrineUserCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('User')
             ->setEntityLabelInPlural('Users')
             ->setSearchFields(['id', 'name', 'email'])
+            ->setFormOptions(
+                ['validation_groups' => [Action::NEW]],
+                ['validation_groups' => [Action::EDIT]]
+            )
         ;
     }
 

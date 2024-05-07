@@ -2,18 +2,25 @@
 
 namespace App\Infrastructure\Doctrine\Model;
 
+use App\Domain\User\Action\CreateUserInput;
+use App\Domain\User\Action\EditUserInput;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Infrastructure\Doctrine\Generator\DoctrineUserIdGenerator;
+use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
 use App\Infrastructure\Doctrine\Repository\DoctrineUserRepository;
+use App\Infrastructure\Doctrine\Validation\DomainSpecificationConstraint;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\CustomIdGenerator;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 
 #[Entity(repositoryClass: DoctrineUserRepository::class)]
 #[Table(name: 'app_user')]
+#[DomainSpecificationConstraint(CreateUserInput::class, DoctrineUserMapper::class, groups: [Action::NEW])]
+#[DomainSpecificationConstraint(EditUserInput::class, DoctrineUserMapper::class, groups: [Action::EDIT])]
 class DoctrineUser
 {
     #[Id]
