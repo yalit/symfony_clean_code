@@ -2,18 +2,29 @@
 
 namespace App\Application\Controller\Admin;
 
+use App\Domain\User\Action\CreateUserInput;
+use App\Domain\User\Action\DeleteUserInput;
+use App\Domain\User\Action\EditUserInput;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Infrastructure\Admin\Field\EnumField;
+use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
 use App\Infrastructure\Doctrine\Model\DoctrineUser;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class DoctrineUserCrudController extends AbstractCrudController
 {
+    public function __construct(
+        private readonly MessageBusInterface $messageBus,
+        private readonly DoctrineUserMapper $doctrineUserMapper,
+    ) {}
+
     public static function getEntityFqcn(): string
     {
         return DoctrineUser::class;
@@ -27,7 +38,7 @@ class DoctrineUserCrudController extends AbstractCrudController
             ->setSearchFields(['id', 'name', 'email'])
             ->setFormOptions(
                 ['validation_groups' => [Action::NEW]],
-                ['validation_groups' => [Action::EDIT]]
+                ['validation_groups' => [Action::EDIT]],
             )
         ;
     }
@@ -41,5 +52,27 @@ class DoctrineUserCrudController extends AbstractCrudController
             EnumField::new('role')->setEnumClass(UserRole::class),
             TextField::new('plainPassword')->onlyOnForms(),
         ];
+    }
+
+
+    /** @param DoctrineUser $entityInstance */
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $createUserInput = $this->doctrineUserMapper->toDomainDto($entityInstance, CreateUserInput::class);
+        $this->messageBus->dispatch($createUserInput);
+    }
+
+    /** @param DoctrineUser $entityInstance */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $editUserInput = $this->doctrineUserMapper->toDomainDto($entityInstance, EditUserInput::class);
+        $this->messageBus->dispatch($editUserInput);
+    }
+
+    /** @param DoctrineUser $entityInstance */
+    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $deleteUserInput = $this->doctrineUserMapper->toDomainDto($entityInstance, DeleteUserInput::class);
+        $this->messageBus->dispatch($deleteUserInput);
     }
 }

@@ -30,7 +30,7 @@ class DeleteUserAuthorization implements AuthorizationInterface
             return false;
         }
 
-        if ($requester->getId() === $resource->getUser()->getId()) {
+        if ($requester->getId() === $resource->getUserId()) {
             return false;
         }
 

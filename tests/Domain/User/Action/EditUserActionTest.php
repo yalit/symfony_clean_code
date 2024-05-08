@@ -153,7 +153,7 @@ class EditUserActionTest extends TestCase
     private function getEditUserInput(string $userEmail, array $data, ?string $newPassword = null): EditUserInput
     {
         return new EditUserInput(
-            $this->userRepository->getOneByEmail($userEmail),
+            $this->userRepository->getOneByEmail($userEmail)->getId(),
             $data,
             $newPassword,
         );

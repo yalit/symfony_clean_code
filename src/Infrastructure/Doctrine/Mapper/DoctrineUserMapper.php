@@ -3,7 +3,10 @@
 namespace App\Infrastructure\Doctrine\Mapper;
 
 use App\Domain\User\Action\CreateUserInput;
+use App\Domain\User\Action\DeleteUserInput;
+use App\Domain\User\Action\EditUserInput;
 use App\Domain\User\Model\User;
+use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Infrastructure\Doctrine\Mapper\DoctrineMapperInterface;
 use App\Infrastructure\Doctrine\Model\DoctrineUser;
 use App\Infrastructure\Doctrine\Repository\DoctrineUserRepository;
@@ -57,6 +60,8 @@ class DoctrineUserMapper implements DoctrineMapperInterface
     {
         return match ($dtoClassName) {
             CreateUserInput::class => $this->toCreateUserInput($entity),
+            EditUserInput::class => $this->toEditUserInput($entity),
+            DeleteUserInput::class => $this->toDeleteUserInput($entity),
             default => throw new \InvalidArgumentException("Unsupported DTO class: $dtoClassName"),
         };
     }
@@ -69,5 +74,19 @@ class DoctrineUserMapper implements DoctrineMapperInterface
             $entity->getPlainPassword(),
             $entity->getRole(),
         );
+    }
+
+    private function toEditUserInput(DoctrineUser $entity): EditUserInput
+    {
+        return new EditUserInput(
+            $entity->getId(),
+            ['name' => $entity->getName(), 'email' => $entity->getEmail(), 'role' => $entity->getRole()],
+            $entity->getPlainPassword(),
+        );
+    }
+
+    private function toDeleteUserInput(DoctrineUser $entity): DeleteUserInput
+    {
+        return new DeleteUserInput($entity->getId());
     }
 }

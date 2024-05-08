@@ -75,7 +75,7 @@ class DeleteUserActionTest extends TestCase
     private function getDeleteUserInput(string $userEmail): DeleteUserInput
     {
         return new DeleteUserInput(
-            $this->userRepository->getOneByEmail($userEmail),
+            $this->userRepository->getOneByEmail($userEmail)->getId(),
         );
     }
 }

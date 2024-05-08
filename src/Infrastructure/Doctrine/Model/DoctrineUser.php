@@ -27,7 +27,7 @@ class DoctrineUser
     #[Column(type: 'string', length: 128)]
     #[GeneratedValue(strategy: 'CUSTOM')]
     #[CustomIdGenerator(class: DoctrineUserIdGenerator::class)]
-    private string $id;
+    private ?string $id = null;
 
     #[Column(type: 'string', length: 128)]
     private string $name;
@@ -48,7 +48,7 @@ class DoctrineUser
         $this->id = $id;
     }
 
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }
