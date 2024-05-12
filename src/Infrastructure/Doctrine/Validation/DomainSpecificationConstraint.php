@@ -14,8 +14,10 @@ class DomainSpecificationConstraint extends Constraint
     public function __construct(
         private readonly string $dtoClassName,
         private readonly string $mapperToDtoClassName,
-        mixed $options = null, ?array $groups = null, mixed $payload = null)
-    {
+        mixed $options = null,
+        ?array $groups = null,
+        mixed $payload = null,
+    ) {
         parent::__construct($options, $groups, $payload);
     }
 
