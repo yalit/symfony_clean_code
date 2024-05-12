@@ -45,7 +45,7 @@ class CreateUserActionTest extends TestCase
 
         //load fixtures
         (new DomainTestUserFixtures($this->userRepository, $this->userFactory))->load();
-        $this->userRepository->setCurrentUser($this->userRepository->findOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
+        $this->userRepository->setCurrentUser($this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
 
         $this->serviceFetcher->addService(UserUniqueEmailRuleValidator::class, new UserUniqueEmailRuleValidator($this->userRepository));
 
@@ -69,7 +69,7 @@ class CreateUserActionTest extends TestCase
      */
     public function testCreateUserAdminCommand(string $name, string $email, string $password, UserRole $role): void
     {
-        $originalUserCount = count($this->userRepository->findAll());
+        $originalUserCount = count($this->userRepository->getAll());
         $commandInput = $this->getCreateUserInput([
             'name' => $name,
             'email' => $email,
@@ -80,9 +80,9 @@ class CreateUserActionTest extends TestCase
         $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory, $this->authorizationChecker);
         $command($commandInput);
 
-        $users = $this->userRepository->findAll();
+        $users = $this->userRepository->getAll();
         self::assertCount($originalUserCount + 1, $users);
-        $user = $this->userRepository->findOneByEmail($email);
+        $user = $this->userRepository->getOneByEmail($email);
         self::assertNotNull($user);
         self::assertInstanceOf(User::class, $user);
         self::assertEquals($name, $user->getName());
@@ -123,7 +123,7 @@ class CreateUserActionTest extends TestCase
      */
     public function testCreateUserCommandWithAnIncorrectRequesterShouldTriggerAnException(string $requesterEmail): void
     {
-        $requester = $this->userRepository->findOneByEmail($requesterEmail);
+        $requester = $this->userRepository->getOneByEmail($requesterEmail);
         self::assertNotNull($requester);
         self::assertNotEquals(UserRole::ADMIN, $requester->getRole());
 

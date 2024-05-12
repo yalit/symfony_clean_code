@@ -4,50 +4,55 @@ namespace App\Infrastructure\Doctrine\Repository;
 
 use App\Domain\User\Model\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
+use App\Infrastructure\Doctrine\Model\DoctrineUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
 
 /**
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @template-extends ServiceEntityRepository<User>
+ * @method DoctrineUser|null find($id, $lockMode = null, $lockVersion = null)
+ * @method DoctrineUser|null findOneBy(array $criteria, array $orderBy = null)
+ * @method DoctrineUser[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @template-extends ServiceEntityRepository<DoctrineUser>
  */
 class DoctrineUserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry, private readonly Security $security)
-    {
-        parent::__construct($registry, User::class);
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly Security $security,
+        private readonly DoctrineUserMapper $doctrineUserMapper,
+    ) {
+        parent::__construct($registry, DoctrineUser::class);
     }
 
     public function save(User $user): void
     {
-        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->persist($this->doctrineUserMapper->fromDomainEntity($user, $this->find($user->getId())));
         $this->getEntityManager()->flush();
     }
 
-    public function findOneById(string $id): ?User
+    public function getOneById(string $id): ?User
     {
-        return $this->find($id);
+        return  $this->getDomainUser($this->find($id));
     }
 
-    public function findOneByEmail(string $email): ?User
+    public function getOneByEmail(string $email): ?User
     {
-        return $this->findOneBy(['email' => $email]);
+        return $this->getDomainUser($this->findOneBy(['email' => $email]));
     }
 
     /**
      * @return User[]
      */
-    public function findAll(): array
+    public function getAll(): array
     {
-        return parent::findAll();
+        return array_map(fn(?DoctrineUser $doctrineUser) => $this->getDomainUser($doctrineUser), $this->findAll());
     }
 
     public function delete(string $id): void
     {
-        $this->getEntityManager()->remove($this->findOneById($id));
+        $this->getEntityManager()->remove($this->find($id));
         $this->getEntityManager()->flush();
     }
 
@@ -56,5 +61,14 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
         /** @var ?User $currentUser */
         $currentUser = $this->security->getUser();
         return $currentUser;
+    }
+
+    private function getDomainUser(?DoctrineUser $doctrineUser): ?User
+    {
+        if ($doctrineUser === null) {
+            return null;
+        }
+
+        return $this->doctrineUserMapper->toDomainEntity($doctrineUser);
     }
 }

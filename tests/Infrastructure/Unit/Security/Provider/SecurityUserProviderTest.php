@@ -68,7 +68,7 @@ class SecurityUserProviderTest extends TestCase
         self::assertFalse($this->passwordHasher->isPasswordValid('user-password', $securityUser));
         self::assertTrue($this->passwordHasher->isPasswordValid($newPassword, $securityUser));
 
-        $updatedUser = $this->userRepository->findOneById($securityUser->getId());
+        $updatedUser = $this->userRepository->getOneById($securityUser->getId());
         self::assertTrue($this->passwordHasher->isPasswordValid($newPassword, $updatedUser));
     }
 }

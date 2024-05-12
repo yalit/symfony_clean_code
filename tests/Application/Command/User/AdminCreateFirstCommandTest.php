@@ -31,10 +31,10 @@ class AdminCreateFirstCommandTest extends KernelTestCase
         $application = new Application(self::$kernel);
 
         // ensure no user are in the database
-        foreach ($this->userRepository->findAll() as $user) {
+        foreach ($this->userRepository->getAll() as $user) {
             $this->userRepository->delete($user->getId());
         }
-        self::assertEmpty($this->userRepository->findAll());
+        self::assertEmpty($this->userRepository->getAll());
 
         $command = $application->find('app:user:create-first-admin');
         $commandTester = new CommandTester($command);
@@ -55,10 +55,10 @@ class AdminCreateFirstCommandTest extends KernelTestCase
         $application = new Application(self::$kernel);
 
         // ensure no user are in the database
-        foreach ($this->userRepository->findAll() as $user) {
+        foreach ($this->userRepository->getAll() as $user) {
             $this->userRepository->delete($user->getId());
         }
-        self::assertEmpty($this->userRepository->findAll());
+        self::assertEmpty($this->userRepository->getAll());
 
         $command = $application->find('app:user:create-first-admin');
         $commandTester = new CommandTester($command);
@@ -87,12 +87,12 @@ class AdminCreateFirstCommandTest extends KernelTestCase
         ]);
 
         self::assertEquals(Command::FAILURE, $commandTester->getStatusCode());
-        self::assertNull($this->userRepository->findOneByEmail('newadmin@email.com'));
+        self::assertNull($this->userRepository->getOneByEmail('newadmin@email.com'));
     }
 
     private function assertCreateUserInDB(string $email, string $name): void
     {
-        $user = $this->userRepository->findOneByEmail($email);
+        $user = $this->userRepository->getOneByEmail($email);
         self::assertNotNull($user);
         self::assertEquals($name, $user->getName());
         self::assertEquals(UserRole::ADMIN, $user->getRole());

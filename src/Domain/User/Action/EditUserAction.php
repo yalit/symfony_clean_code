@@ -36,10 +36,16 @@ class EditUserAction implements Action
         }
 
         $changed = false;
-        $user = $input->getUser();
+        $userId = $input->getUserId();
+        $user = $this->userRepository->getOneById($userId);
         foreach ($input->getData() as $key => $value) {
             $setter = $this->defineSetter($key);
-            if(method_exists(User::class, $setter)) {
+            $getter = $this->defineGetter($key);
+            if(
+                method_exists(User::class, $setter)
+                && method_exists(User::class, $getter)
+                && $user->$getter() !== $value
+            ) {
                 $user->$setter($value);
                 $changed = true;
             }
@@ -60,5 +66,10 @@ class EditUserAction implements Action
     private function defineSetter(string $variableName): string
     {
         return 'set' . ucfirst($variableName);
+    }
+
+    private function defineGetter(int|string $key): string
+    {
+        return 'get' . ucfirst($key);
     }
 }

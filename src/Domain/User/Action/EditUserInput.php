@@ -13,14 +13,14 @@ class EditUserInput implements ActionInput
      * @param array<string, mixed> $data
      */
     public function __construct(
-        private readonly User $user,
-        private readonly array $data,
+        private readonly string  $userId,
+        private readonly array   $data,
         private readonly ?string $newPassword = null,
     ) {}
 
-    public function getUser(): User
+    public function getUserId(): string
     {
-        return $this->user;
+        return $this->userId;
     }
 
     /**

@@ -28,7 +28,7 @@ class DeleteUserAction implements Action
             throw new InvalidRequester();
         }
 
-        $this->userRepository->delete($input->getUser()->getId());
+        $this->userRepository->delete($input->getUserId());
 
         return null;
     }

@@ -30,7 +30,7 @@ class EditUserAuthorization implements AuthorizationInterface
             return false;
         }
 
-        if ($requester->getRole() === UserRole::ADMIN || $requester->getId() === $resource->getUser()->getId()) {
+        if ($requester->getRole() === UserRole::ADMIN || $requester->getId() === $resource->getUserId()) {
             return true;
         }
 

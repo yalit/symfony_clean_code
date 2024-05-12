@@ -20,6 +20,15 @@ class UserUniqueDataEmailRuleValidator implements RuleValidatorInterface
             return true;
         }
 
-        return $this->userRepository->findOneByEmail($object->getData()['email']) === null;
+        $targetEntity = $this->userRepository->getOneByEmail($object->getData()['email']);
+        if ($targetEntity === null) {
+            return true;
+        }
+
+        if (!method_exists($object, 'getUser')) {
+            return true;
+        }
+
+        return $object->getUser()->getId() === $targetEntity->getId();
     }
 }

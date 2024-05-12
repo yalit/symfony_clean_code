@@ -8,14 +8,14 @@ interface UserRepositoryInterface
 {
     public function save(User $user): void;
 
-    public function findOneById(string $id): ?User;
+    public function getOneById(string $id): ?User;
 
-    public function findOneByEmail(string $email): ?User;
+    public function getOneByEmail(string $email): ?User;
 
     /**
      * @return array<User>
      */
-    public function findAll(): array;
+    public function getAll(): array;
 
     public function delete(string $id): void;
 

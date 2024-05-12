@@ -2,7 +2,7 @@
 
 namespace App\Tests\Application\Controller\Security;
 
-use App\Infrastructure\Doctrine\DataFixtures\UserFixtures;
+use App\Infrastructure\Doctrine\DataFixtures\DoctrineUserFixtures;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SecurityControllerTest extends WebTestCase
@@ -23,8 +23,8 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $client->submitForm(
             'Login',
             [
-                '_username' => sprintf(UserFixtures::USER_EMAIL, UserFixtures::ADMIN_NAME),
-                '_password' => UserFixtures::PASSWORD,
+                '_username' => sprintf(DoctrineUserFixtures::USER_EMAIL, DoctrineUserFixtures::ADMIN_NAME),
+                '_password' => DoctrineUserFixtures::PASSWORD,
             ],
         );
 
@@ -41,7 +41,7 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $client->submitForm(
             'Login',
             [
-                '_username' => sprintf(UserFixtures::USER_EMAIL, UserFixtures::ADMIN_NAME),
+                '_username' => sprintf(DoctrineUserFixtures::USER_EMAIL, DoctrineUserFixtures::ADMIN_NAME),
                 '_password' => 'invalid_password',
             ],
         );

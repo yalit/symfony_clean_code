@@ -8,11 +8,11 @@ use App\Domain\User\Model\User;
 class DeleteUserInput implements ActionInput
 {
     public function __construct(
-        private readonly User $user,
+        private readonly string $userId,
     ) {}
 
-    public function getUser(): User
+    public function getUserId(): string
     {
-        return $this->user;
+        return $this->userId;
     }
 }

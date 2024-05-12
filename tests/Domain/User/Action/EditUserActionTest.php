@@ -33,7 +33,7 @@ class EditUserActionTest extends TestCase
         $this->passwordHasher = new TestPasswordHasher();
 
         (new DomainTestUserFixtures($this->userRepository, new UserFactory($this->passwordHasher)))->load();
-        $this->userRepository->setCurrentUser($this->userRepository->findOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
+        $this->userRepository->setCurrentUser($this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
 
         $serviceFetcher = new TestServiceFetcher();
         $serviceFetcher->addService(UserUniqueDataEmailRuleValidator::class, new UserUniqueDataEmailRuleValidator($this->userRepository));
@@ -55,11 +55,11 @@ class EditUserActionTest extends TestCase
      */
     public function testEditUserActionWithNoPasswordUpdate(string $userEmail, array $data): void
     {
-        $user = $this->userRepository->findOneByEmail($userEmail);
+        $user = $this->userRepository->getOneByEmail($userEmail);
 
         $editUserAction = new EditUserAction($this->userRepository, $this->passwordHasher, $this->validator, $this->authorizationChecker);
         $editUserAction($this->getEditUserInput($userEmail, $data));
-        $updatedUser = $this->userRepository->findOneById($user->getId());
+        $updatedUser = $this->userRepository->getOneById($user->getId());
         foreach ($data as $key => $value) {
             $getter = 'get' . ucfirst($key);
             $this->assertEquals($value, $updatedUser->$getter());
@@ -72,7 +72,7 @@ class EditUserActionTest extends TestCase
      */
     public function testEditUserActionByItselfWithNoPasswordUpdate(string $userEmail, array $data): void
     {
-        $user = $this->userRepository->findOneByEmail($userEmail);
+        $user = $this->userRepository->getOneByEmail($userEmail);
         self::assertNotNull($user);
 
         $this->userRepository->setCurrentUser($user);
@@ -80,7 +80,7 @@ class EditUserActionTest extends TestCase
         $editUserAction = new EditUserAction($this->userRepository, $this->passwordHasher, $this->validator, $this->authorizationChecker);
         $editUserAction($this->getEditUserInput($userEmail, $data));
 
-        $updatedUser = $this->userRepository->findOneById($user->getId());
+        $updatedUser = $this->userRepository->getOneById($user->getId());
         foreach ($data as $key => $value) {
             $getter = 'get' . ucfirst($key);
             $this->assertEquals($value, $updatedUser->$getter());
@@ -99,13 +99,13 @@ class EditUserActionTest extends TestCase
 
     public function testEditUseActionWithPasswordUpdate(): void
     {
-        $user = $this->userRepository->findOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
+        $user = $this->userRepository->getOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
         $newPassword = 'newPassword';
         $oldPassword = $user->getPassword();
         $editUserAction = new EditUserAction($this->userRepository, $this->passwordHasher, $this->validator, $this->authorizationChecker);
         $editUserAction($this->getEditUserInput(DomainTestUserFixtures::EDITOR_EMAIL, [], $newPassword));
 
-        $updatedUser = $this->userRepository->findOneById($user->getId());
+        $updatedUser = $this->userRepository->getOneById($user->getId());
         self::assertNotEquals($oldPassword, $updatedUser->getPassword());
         self::assertNotEquals($newPassword, $updatedUser->getPassword());
         self::assertTrue($this->passwordHasher->isPasswordValid($newPassword, $updatedUser));
@@ -113,24 +113,24 @@ class EditUserActionTest extends TestCase
 
     public function testEditUserOnANonExistingData(): void
     {
-        $user = $this->userRepository->findOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
+        $user = $this->userRepository->getOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
         $editUserAction = new EditUserAction($this->userRepository, $this->passwordHasher, $this->validator, $this->authorizationChecker);
         $editUserAction($this->getEditUserInput(DomainTestUserFixtures::EDITOR_EMAIL, ['non_existing_data' => 'notChanged']));
-        $updateUser = $this->userRepository->findOneById($user->getId());
+        $updateUser = $this->userRepository->getOneById($user->getId());
         self::assertNotEquals('notChanged', $updateUser->getName());
         self::assertNotEquals('notChanged', $updateUser->getEmail());
     }
 
     public function testEditUserByNonAdminAndNonItself(): void
     {
-        $this->userRepository->setCurrentUser($this->userRepository->findOneByEmail(DomainTestUserFixtures::AUTHOR_EMAIL));
+        $this->userRepository->setCurrentUser($this->userRepository->getOneByEmail(DomainTestUserFixtures::AUTHOR_EMAIL));
 
         $editUserAction = new EditUserAction($this->userRepository, $this->passwordHasher, $this->validator, $this->authorizationChecker);
 
         $this->expectException(InvalidRequester::class);
         $editUserAction($this->getEditUserInput(DomainTestUserFixtures::EDITOR_EMAIL, ['name' => 'New Editor Name']));
 
-        $updateUser = $this->userRepository->findOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
+        $updateUser = $this->userRepository->getOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
         self::assertNotEquals('New Editor Name', $updateUser->getName());
     }
 
@@ -143,7 +143,7 @@ class EditUserActionTest extends TestCase
         $this->expectException(InvalidRequester::class);
         $editUserAction($this->getEditUserInput(DomainTestUserFixtures::EDITOR_EMAIL, ['name' => 'New Editor Name']));
 
-        $updateUser = $this->userRepository->findOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
+        $updateUser = $this->userRepository->getOneByEmail(DomainTestUserFixtures::EDITOR_EMAIL);
         self::assertNotEquals('New Editor Name', $updateUser->getName());
     }
 
@@ -153,7 +153,7 @@ class EditUserActionTest extends TestCase
     private function getEditUserInput(string $userEmail, array $data, ?string $newPassword = null): EditUserInput
     {
         return new EditUserInput(
-            $this->userRepository->findOneByEmail($userEmail),
+            $this->userRepository->getOneByEmail($userEmail)->getId(),
             $data,
             $newPassword,
         );
