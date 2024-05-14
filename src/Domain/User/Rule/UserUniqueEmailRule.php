@@ -14,4 +14,9 @@ class UserUniqueEmailRule implements RuleInterface
     {
         return UserUniqueEmailRuleValidator::class;
     }
+
+    public function getErrorMessage(): string
+    {
+        return 'Email already exists';
+    }
 }

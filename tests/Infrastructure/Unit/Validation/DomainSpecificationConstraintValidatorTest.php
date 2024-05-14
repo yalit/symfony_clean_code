@@ -8,10 +8,9 @@ use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
 use App\Infrastructure\Doctrine\Model\DoctrineUser;
-use App\Infrastructure\Doctrine\Validation\DomainSpecificationConstraint;
-use App\Infrastructure\Doctrine\Validation\DomainSpecificationConstraintValidator;
+use App\Infrastructure\Validation\DomainSpecificationConstraint;
+use App\Infrastructure\Validation\DomainSpecificationConstraintValidator;
 use App\Tests\Shared\Service\TestServiceFetcher;
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
@@ -61,6 +60,23 @@ class DomainSpecificationConstraintValidatorTest extends ConstraintValidatorTest
             ->expects($this->once())
             ->method('isValid')
             ->willReturn(false);
+
+        $this->domainValidator
+            ->expects($this->once())
+            ->method('getErrors')
+            ->willReturn([
+                new class {
+                    public function getMessage(): string
+                    {
+                        return 'error message';
+                    }
+
+                    public function getRuleName(): string
+                    {
+                        return 'rule name';
+                    }
+                }
+            ]);
 
         $doctrineUser = new DoctrineUser();
         $doctrineUser->setName('test name');

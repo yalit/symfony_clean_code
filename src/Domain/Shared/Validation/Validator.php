@@ -9,24 +9,37 @@ use InvalidArgumentException;
 
 class Validator implements ValidatorInterface
 {
+    /** @var ValidatorError[] */
+    private array $errors = [];
+
     public function __construct(private readonly ServiceFetcherInterface $serviceFetcher) {}
 
     public function isValid(object $object): bool
     {
         $rules = $this->getObjectRules($object);
 
+        $this->errors = [];
+
         foreach ($rules as $rule) {
             $validator = $this->serviceFetcher->fetch($rule->getValidatorClass());
             if (!$validator) {
-                throw new InvalidArgumentException('Validator not found');
+                throw new InvalidArgumentException(sprintf('Validator not found for %s rule', $rule::class));
             }
 
             if (!$validator->isValid($object, $rule)) {
-                return false;
+                $this->errors[] = $rule->getErrorMessage();
             }
         }
 
-        return true;
+        return count($this->errors) === 0;
+    }
+
+    /**
+     * @return ValidatorError[]
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
     }
 
     /**

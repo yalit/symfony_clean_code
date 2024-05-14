@@ -8,7 +8,7 @@ use App\Domain\User\Model\Enum\UserRole;
 use App\Infrastructure\Doctrine\Generator\DoctrineUserIdGenerator;
 use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
 use App\Infrastructure\Doctrine\Repository\DoctrineUserRepository;
-use App\Infrastructure\Doctrine\Validation\DomainSpecificationConstraint;
+use App\Infrastructure\Validation\DomainSpecificationConstraint;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\CustomIdGenerator;
 use Doctrine\ORM\Mapping\Entity;

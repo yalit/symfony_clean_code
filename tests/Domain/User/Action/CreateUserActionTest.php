@@ -3,6 +3,7 @@
 namespace App\Tests\Domain\User\Action;
 
 use App\Domain\Shared\Authorization\AuthorizationCheckerInterface;
+use App\Domain\Shared\Validation\Exception\ValidationException;
 use App\Domain\User\Authorization\CreateUserAuthorization;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\Rule\UserUniqueEmailRule;
@@ -160,7 +161,7 @@ class CreateUserActionTest extends TestCase
         ]);
 
         $command = new CreateUserAction($this->userRepository, $this->validator, $this->userFactory, $this->authorizationChecker);
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ValidationException::class);
         $command($commandInput);
 
         self::assertStringContainsString(UserUniqueEmailRule::class, $this->getExpectedExceptionMessage());
