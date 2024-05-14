@@ -65,7 +65,7 @@ class DomainSpecificationConstraintValidatorTest extends ConstraintValidatorTest
             ->expects($this->once())
             ->method('getErrors')
             ->willReturn([
-                new class {
+                new class () {
                     public function getMessage(): string
                     {
                         return 'error message';
@@ -75,7 +75,7 @@ class DomainSpecificationConstraintValidatorTest extends ConstraintValidatorTest
                     {
                         return 'rule name';
                     }
-                }
+                },
             ]);
 
         $doctrineUser = new DoctrineUser();

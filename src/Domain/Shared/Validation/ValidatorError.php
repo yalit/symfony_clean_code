@@ -9,7 +9,7 @@ class ValidatorError
      */
     public function __construct(
         private readonly string $ruleName,
-        private readonly string $message
+        private readonly string $message,
     ) {}
 
     public function getRuleName(): string

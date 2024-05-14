@@ -10,4 +10,9 @@ class NotExistingRule implements RuleInterface
     {
         return NotExistingRuleValidator::class;
     }
+
+    public function getErrorMessage(): string
+    {
+        return "this rule is a dummy rule for testing and should not be used in production code";
+    }
 }

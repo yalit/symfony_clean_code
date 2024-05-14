@@ -38,7 +38,7 @@ class DomainSpecificationConstraintValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, $constraint->getDtoClassName());
         }
 
-        if (!$this->validator->isValid($dto)){
+        if (!$this->validator->isValid($dto)) {
             foreach ($this->validator->getErrors() as $error) {
                 $this->context->buildViolation($error->getMessage())
                     ->setParameter('{{ rule }}', $error->getRuleName())
