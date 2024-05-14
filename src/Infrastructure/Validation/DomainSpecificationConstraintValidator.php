@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Doctrine\Validation;
+namespace App\Infrastructure\Validation;
 
 use App\Domain\Shared\ServiceFetcherInterface;
 use App\Domain\Shared\Validation\ValidatorInterface;
@@ -39,8 +39,12 @@ class DomainSpecificationConstraintValidator extends ConstraintValidator
         }
 
         if (!$this->validator->isValid($dto)) {
-            $this->context->buildViolation('Error in the input data')
-                ->addViolation();
+            foreach ($this->validator->getErrors() as $error) {
+                $this->context->buildViolation($error->getMessage())
+                    ->setParameter('{{ rule }}', $error->getRuleName())
+                    ->addViolation()
+                ;
+            }
         }
     }
 }

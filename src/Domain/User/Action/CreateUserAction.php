@@ -7,6 +7,7 @@ use App\Domain\Shared\Action\ActionOutput;
 use App\Domain\Shared\Authorization\AuthorizationCheckerInterface;
 use App\Domain\Shared\Exception\InvalidRequester;
 use App\Domain\Shared\Exception\InvalidSpecification;
+use App\Domain\Shared\Validation\Exception\ValidationException;
 use App\Domain\Shared\Validation\ValidatorInterface;
 use App\Domain\User\Authorization\CreateUserAuthorization;
 use App\Domain\User\Model\Enum\UserRole;
@@ -30,7 +31,7 @@ class CreateUserAction implements Action
         }
 
         if (!$this->validator->isValid($input)) {
-            throw new InvalidArgumentException('Invalid input for CreateUser Action²');
+            throw new ValidationException($this->validator->getErrors());
         }
 
         $user = match ($input->getRole()) {
