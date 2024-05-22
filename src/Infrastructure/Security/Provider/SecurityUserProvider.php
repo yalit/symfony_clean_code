@@ -5,6 +5,7 @@ namespace App\Infrastructure\Security\Provider;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Infrastructure\Security\Factory\SecurityUserFactory;
 use App\Infrastructure\Security\Model\SecurityUser;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,7 +23,7 @@ class SecurityUserProvider implements UserProviderInterface, PasswordUpgraderInt
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof SecurityUser) {
-            throw new \Exception('Invalid user');
+            throw new UserNotFoundException();
         }
 
         return $this->loadUserByIdentifier($user->getEmail());
@@ -38,7 +39,7 @@ class SecurityUserProvider implements UserProviderInterface, PasswordUpgraderInt
         $user = $this->userRepository->getOneByEmail($identifier);
 
         if ($user === null) {
-            throw new \Exception('User not found');
+            throw new UserNotFoundException();
         }
 
         return SecurityUserFactory::createFromUser($user);

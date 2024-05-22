@@ -1,3 +1,28 @@
+@import "../fonts/satoshi/css/satoshi.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body {
+    @apply bg-gray-200;
+    font-family: Satoshi, sans-serif;
+}
+
+.notification {
+    &.error {
+        @apply text-red-900 bg-red-200 border rounded border-red-600;
+    }
+}
+
+nav {
+    .nav__menu {
+        .nav__menu__item {
+            @apply flex gap-1;
+            span {
+                @apply hover:pl-2;
+            }
+        }
+    }
+}
+
