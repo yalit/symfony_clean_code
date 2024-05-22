@@ -4,9 +4,7 @@ namespace App\Infrastructure\Twig;
 
 use BackedEnum;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
-use UnitEnum;
 
 class EnumTwigExtension extends AbstractExtension
 {
@@ -21,13 +19,12 @@ class EnumTwigExtension extends AbstractExtension
      */
     public function getEnumValue(string $enumClass, string $enumCase): string
     {
-        try{
+        try {
             $enum = constant(sprintf('%s::%s', $enumClass, $enumCase));
             if ($enum instanceof BackedEnum) {
                 return $enum->value;
-            } elseif ($enum instanceof UnitEnum) {
-                return $enum->name;
             }
+            return $enum->name;
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException('Invalid enum class or case');
         }

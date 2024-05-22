@@ -29,7 +29,7 @@ class SecurityUser extends User implements UserInterface, PasswordAuthenticatedU
         return match ($role) {
             UserRole::ADMIN => 'ROLE_ADMIN',
             UserRole::EDITOR => 'ROLE_EDITOR',
-            UserRole::AUTHOR => 'ROLE_AUTHOR'
+            UserRole::AUTHOR => 'ROLE_AUTHOR',
         };
     }
 }
