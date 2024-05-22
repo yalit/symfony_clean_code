@@ -72,7 +72,6 @@ front-build-prod: ## Build the assets in prod mode
 ## —— Doctrine ————————————————————————————————————————————————————————————
 db-create: db-drop ## Create the database
 	${CONSOLE} doctrine:database:create --env=dev
-	${CONSOLE} doctrine:migration:migrate --no-interaction --env=dev
 
 db-drop: ## Drop the database
 	${CONSOLE} doctrine:database:drop --force --env=dev
@@ -87,7 +86,7 @@ migration: ## Create a new migration
 	${CONSOLE} make:migration
 
 migrate: ## Execute the migrations in DEV environment
-	${CONSOLE} doctrine:migrations:migrate --no-interaction
+	${CONSOLE} doctrine:migrations:migrate --no-interaction --env=dev
 
 ## —— Testing ————————————————————————————————————————————————————————————
 tests-prepare: ## Prepare the test environment (database / fixtures)
