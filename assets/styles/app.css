@@ -1,3 +1,87 @@
+@import "../fonts/satoshi/css/satoshi.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body {
+    @apply bg-gray-200;
+    font-family: Satoshi, sans-serif;
+}
+
+.notification {
+    &.error {
+        @apply text-red-900 bg-red-200 border rounded border-red-600;
+    }
+}
+
+nav {
+    .nav__menu {
+        .nav__menu__item {
+            @apply flex gap-1;
+            span {
+                @apply hover:pl-2;
+            }
+        }
+    }
+}
+
+.card {
+    @apply bg-white shadow p-6 relative rounded-sm;
+
+    .card__title {
+        @apply font-bold text-xl mb-4;
+    }
+
+    .card__subtitle {
+        @apply max-w-[75%] text-gray-600;
+    }
+
+    .card__action {
+        @apply absolute top-0 right-5 p-2 h-full flex flex-col gap-1 justify-center items-center cursor-pointer;
+
+        &.add {
+            @apply text-green-700;
+        }
+
+        &.medium {
+            svg {
+                @apply w-10 h-10;
+            }
+        }
+
+        span {
+            @apply font-bold text-sm;
+        }
+    }
+}
+
+.data__table{
+    .data__table__header {
+        @apply border-b border-gray-200;
+
+        .data__table__header_cell {
+            @apply p-2 font-bold text-gray-600;
+        }
+    }
+
+    .data__table__line {
+        @apply py-2;
+
+        &.even {
+            @apply bg-gray-50;
+        }
+
+        .data__table__cell{
+            @apply px-2 flex items-center gap-2 flex-wrap;
+        }
+    }
+
+    .bubble {
+        @apply bg-gray-200 border-gray-500 text-gray-800 rounded-lg shadow py-1 px-2 mr-1;
+
+        &.green {
+            @apply bg-green-200 border-green-500;
+        }
+    }
+}

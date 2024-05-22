@@ -1,18 +1,46 @@
 {# templates/login/index.html.twig #}
-{% extends 'base.html.twig' %}
+{% extends 'base_naked.html.twig' %}
+
+{% block pageName "login" %}
 
 {% block body %}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    <form action="{{ path('app_login') }}" method="post">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}">
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password">
-
-        <button type="submit">Login</button>
-    </form>
+    <div class="h-screen w-screen flex items-center justify-center">
+        <div class="flex bg-white w-10/12 md:w-8/12 rounded-lg shadow-lg overflow-hidden">
+            <div class="hidden lg:block lg:w-1/2">
+                <img src="{{ asset('images/score_lib.jpg') }}" class="w-full h-full object-cover object-center"/>
+            </div>
+            <div class="flex flex-col items-center justify-center w-full p-8 lg:w-1/2">
+                <h2 class="text-2xl font-semibold text-gray-700 text-center">Score Lib</h2>
+                <p class="text-xl text-gray-600 text-center">Welcome back!</p>
+                <form action="{{ path('app_login') }}" method="post" class="w-full">
+                    <div class="mt-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Email Address</label>
+                        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full"
+                               type="text" name="_username" id="username" value="{{ last_username }}"/>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-between">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+                            {# <a href="#" class="text-xs text-gray-500">Forgot Password?</a> #}
+                        </div>
+                        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full"
+                               type="password" id="password" name="_password"/>
+                    </div>
+                    {% if error %}
+                        <div class="mt-4 p-2 notification error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+                    <div class="mt-8">
+                        <button class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
+                                type="submit">Login
+                        </button>
+                    </div>
+                </form>
+                <div class="w-full mt-4 flex items-center justify-between">
+                    <span class="border-b w-1/5 sm:w-1/4"></span>
+                    <a href="{{ path('app_register') }}" class="text-xs text-gray-500 uppercase">or sign up</a>
+                    <span class="border-b w-1/5 md:w-1/4"></span>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

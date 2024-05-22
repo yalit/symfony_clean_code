@@ -9,6 +9,7 @@ use App\Infrastructure\Security\Provider\SecurityUserProvider;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
 use App\Tests\Domain\User\Service\TestPasswordHasher;
 use Monolog\Test\TestCase;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class SecurityUserProviderTest extends TestCase
 {
@@ -44,8 +45,7 @@ class SecurityUserProviderTest extends TestCase
 
     public function testLoadUserByIdentifierWithInvalidUser(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('User not found');
+        $this->expectException(UserNotFoundException::class);
 
         $this->securityUserProvider->loadUserByIdentifier('test@email.com');
     }
