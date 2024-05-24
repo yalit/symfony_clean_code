@@ -11,6 +11,7 @@
         "ext-gd": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
+        "ext-fileinfo": "*",
         "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^2.16",

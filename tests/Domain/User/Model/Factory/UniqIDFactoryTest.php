@@ -2,7 +2,7 @@
 
 namespace App\Tests\Domain\User\Model\Factory;
 
-use App\Domain\User\Service\Factory\UniqIDFactory;
+use App\Domain\Shared\Service\Factory\UniqIDFactory;
 use PHPUnit\Framework\TestCase;
 
 class UniqIDFactoryTest extends TestCase

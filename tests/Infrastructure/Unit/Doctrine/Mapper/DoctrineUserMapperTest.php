@@ -2,12 +2,10 @@
 
 namespace App\Tests\Infrastructure\Unit\Doctrine\Mapper;
 
+use App\Domain\Shared\Service\Factory\UniqIDFactory;
 use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\User;
-use App\Domain\User\Service\Factory\UniqIDFactory;
-use App\Domain\User\Service\Factory\UserFactory;
-use App\Domain\User\Service\PasswordHasherInterface;
 use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
 use App\Infrastructure\Doctrine\Model\DoctrineUser;
 use PHPUnit\Framework\TestCase;

@@ -2,6 +2,7 @@
 
 namespace App\Domain\User\Service\Factory;
 
+use App\Domain\Shared\Service\Factory\UniqIDFactory;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\User;
 use App\Domain\User\Service\PasswordHasherInterface;

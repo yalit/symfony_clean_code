@@ -10,10 +10,13 @@ class ScoreFile
         private string $path,
         private string $mimeType,
         private int $size,
-        private string $extension,
-        private string $hash,
-        private Score $score,
+        private ?string $extension = null,
     ) {}
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
 
     public function getName(): string
     {
@@ -55,38 +58,13 @@ class ScoreFile
         $this->size = $size;
     }
 
-    public function getExtension(): string
+    public function getExtension(): ?string
     {
         return $this->extension;
     }
 
-    public function setExtension(string $extension): void
+    public function setExtension(?string $extension = null): void
     {
         $this->extension = $extension;
-    }
-
-    public function getHash(): string
-    {
-        return $this->hash;
-    }
-
-    public function setHash(string $hash): void
-    {
-        $this->hash = $hash;
-    }
-
-    public function getScore(): Score
-    {
-        return $this->score;
-    }
-
-    public function setScore(Score $score): void
-    {
-        $this->score = $score;
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
     }
 }

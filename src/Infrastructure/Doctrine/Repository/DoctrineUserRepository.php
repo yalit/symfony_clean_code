@@ -26,9 +26,12 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
         parent::__construct($registry, DoctrineUser::class);
     }
 
-    public function save(User $user): void
+    /**
+     * @param User $entity
+     */
+    public function save(object $entity): void
     {
-        $this->getEntityManager()->persist($this->doctrineUserMapper->fromDomainEntity($user, $this->find($user->getId())));
+        $this->getEntityManager()->persist($this->doctrineUserMapper->fromDomainEntity($entity, $this->find($entity->getId())));
         $this->getEntityManager()->flush();
     }
 

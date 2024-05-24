@@ -3,27 +3,25 @@
 namespace App\Tests\Domain\User\Action;
 
 use App\Domain\Shared\Authorization\AuthorizationCheckerInterface;
-use App\Domain\Shared\Validation\Exception\ValidationException;
-use App\Domain\User\Authorization\CreateUserAuthorization;
-use App\Domain\User\Repository\UserRepositoryInterface;
-use App\Domain\User\Rule\UserUniqueEmailRule;
-use App\Domain\User\Rule\UserUniqueEmailRuleValidator;
 use App\Domain\Shared\Exception\InvalidRequester;
 use App\Domain\Shared\ServiceFetcherInterface;
+use App\Domain\Shared\Validation\Exception\ValidationException;
 use App\Domain\Shared\Validation\Validator;
 use App\Domain\Shared\Validation\ValidatorInterface;
 use App\Domain\User\Action\CreateUserAction;
 use App\Domain\User\Action\CreateUserInput;
+use App\Domain\User\Authorization\CreateUserAuthorization;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Model\User;
+use App\Domain\User\Rule\UserUniqueEmailRule;
+use App\Domain\User\Rule\UserUniqueEmailRuleValidator;
 use App\Domain\User\Service\Factory\UserFactory;
 use App\Domain\User\Service\PasswordHasherInterface;
 use App\Tests\Domain\Shared\Authorization\TestAuthorizationChecker;
-use App\Tests\Domain\User\Repository\DomainTestUserFixtures;
+use App\Tests\Domain\User\Fixtures\DomainTestUserFixtures;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
 use App\Tests\Domain\User\Service\TestPasswordHasher;
 use App\Tests\Shared\Service\TestServiceFetcher;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class CreateUserActionTest extends TestCase

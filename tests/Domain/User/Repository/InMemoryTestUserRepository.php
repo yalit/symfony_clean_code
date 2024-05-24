@@ -14,9 +14,9 @@ class InMemoryTestUserRepository implements UserRepositoryInterface
 
     private ?User $currentUser = null;
 
-    public function save(User $user): void
+    public function save(object $entity): void
     {
-        $this->users[$user->getId()] = $user;
+        $this->users[$entity->getId()] = $entity;
     }
 
     public function getOneById(string $id): ?User

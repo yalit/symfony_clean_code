@@ -2,11 +2,14 @@
 
 namespace App\Domain\Score\Model;
 
-class Category
+use App\Domain\Score\Model\Enum\ScoreCategoryType;
+
+class ScoreCategory
 {
     public function __construct(
         private readonly string $id,
         private string $name,
+        private ScoreCategoryType $type,
         private ?string $description,
     ) {}
 
@@ -33,5 +36,15 @@ class Category
     public function setDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    public function getType(): ScoreCategoryType
+    {
+        return $this->type;
+    }
+
+    public function setType(ScoreCategoryType $type): void
+    {
+        $this->type = $type;
     }
 }

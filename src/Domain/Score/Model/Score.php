@@ -10,15 +10,15 @@ class Score
         private readonly string   $id,
         private string            $title,
         private string            $description,
-        /** @var Identification[] */
+        /** @var ScoreIdentification[] */
         private array             $identifications,
         /** @var Composer[] */
         private array             $composers,
-        /** @var Category[] */
+        /** @var ScoreCategory[] */
         private array             $categories,
         /** @var ScoreFile[] */
         private array             $scoreFiles,
-        private DateTimeImmutable $createdAt,
+        private readonly DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt,
     ) {}
 
@@ -47,11 +47,6 @@ class Score
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
     public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
@@ -67,20 +62,20 @@ class Score
         return $this->id;
     }
 
-    /** @return Identification[] */
+    /** @return ScoreIdentification[] */
     public function getIdentifications(): array
     {
         return $this->identifications;
     }
 
-    public function addIdentification(Identification $identification): void
+    public function addIdentification(ScoreIdentification $identification): void
     {
         if (!array_key_exists($identification->getId(), $this->identifications)) {
             $this->identifications[$identification->getId()] = $identification;
         }
     }
 
-    public function removeIdentification(Identification $identification): void
+    public function removeIdentification(ScoreIdentification $identification): void
     {
         if (array_key_exists($identification->getId(), $this->identifications)) {
             unset($this->identifications[$identification->getId()]);
@@ -107,19 +102,19 @@ class Score
         }
     }
 
-    /** @return Category[] */
+    /** @return ScoreCategory[] */
     public function getCategories(): array
     {
         return $this->categories;
     }
-    public function addCategory(Category $category): void
+    public function addCategory(ScoreCategory $category): void
     {
         if (!array_key_exists($category->getId(), $this->categories)) {
             $this->categories[$category->getId()] = $category;
         }
     }
 
-    public function removeCategory(Category $category): void
+    public function removeCategory(ScoreCategory $category): void
     {
         if (array_key_exists($category->getId(), $this->categories)) {
             unset($this->categories[$category->getId()]);

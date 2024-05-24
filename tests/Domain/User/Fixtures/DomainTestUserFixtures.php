@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain\User\Repository;
+namespace App\Tests\Domain\User\Fixtures;
 
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\Service\Factory\UserFactory;
