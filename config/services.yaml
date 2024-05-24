@@ -17,6 +17,7 @@ services:
         resource: '../src/Domain/'
         exclude:
             - '../src/Domain/User/Model/'
+            - '../src/Domain/Score/Model/'
 
     App\Application\:
         resource: '../src/Application/'
