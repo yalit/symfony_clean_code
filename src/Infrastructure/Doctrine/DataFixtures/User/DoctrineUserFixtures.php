@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Doctrine\DataFixtures;
+namespace App\Infrastructure\Doctrine\DataFixtures\User;
 
 use App\Domain\User\Service\Factory\UserFactory;
-use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
+use App\Infrastructure\Doctrine\Mapper\User\DoctrineUserMapper;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 

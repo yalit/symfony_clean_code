@@ -2,7 +2,7 @@
 
 namespace App\Tests\Application\Controller\Security;
 
-use App\Infrastructure\Doctrine\DataFixtures\DoctrineUserFixtures;
+use App\Infrastructure\Doctrine\DataFixtures\User\DoctrineUserFixtures;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SecurityControllerTest extends WebTestCase

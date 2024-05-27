@@ -17,6 +17,7 @@ use App\Domain\User\Rule\UserUniqueEmailRule;
 use App\Domain\User\Rule\UserUniqueEmailRuleValidator;
 use App\Domain\User\Service\Factory\UserFactory;
 use App\Domain\User\Service\PasswordHasherInterface;
+use App\Tests\Domain\Shared\Action\DomainActionTestCase;
 use App\Tests\Domain\Shared\Authorization\TestAuthorizationChecker;
 use App\Tests\Domain\User\Fixtures\DomainTestUserFixtures;
 use App\Tests\Domain\User\Repository\InMemoryTestUserRepository;
@@ -24,43 +25,24 @@ use App\Tests\Domain\User\Service\TestPasswordHasher;
 use App\Tests\Shared\Service\TestServiceFetcher;
 use PHPUnit\Framework\TestCase;
 
-class CreateUserActionTest extends TestCase
+class CreateUserActionTest extends DomainActionTestCase
 {
-    private InMemoryTestUserRepository $userRepository;
     private PasswordHasherInterface $passwordHasher;
-    private UserFactory $userFactory;
-    private ServiceFetcherInterface $serviceFetcher;
-    private ValidatorInterface $validator;
-    private AuthorizationCheckerInterface $authorizationChecker;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->userRepository = new InMemoryTestUserRepository();
         $this->passwordHasher = new TestPasswordHasher();
-        $this->userFactory = new UserFactory($this->passwordHasher);
-        $this->serviceFetcher = new TestServiceFetcher();
-        $this->validator = new Validator($this->serviceFetcher);
-
-        //load fixtures
-        (new DomainTestUserFixtures($this->userRepository, $this->userFactory))->load();
         $this->userRepository->setCurrentUser($this->userRepository->getOneByEmail(DomainTestUserFixtures::ADMIN_EMAIL));
 
         $this->serviceFetcher->addService(UserUniqueEmailRuleValidator::class, new UserUniqueEmailRuleValidator($this->userRepository));
-
-        $this->authorizationChecker = new TestAuthorizationChecker();
         $this->authorizationChecker->addAuthorization(new CreateUserAuthorization($this->userRepository));
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
-        unset($this->userRepository);
         unset($this->passwordHasher);
-        unset($this->userFactory);
-        unset($this->serviceFetcher);
-        unset($this->validator);
-        unset($this->authorizationChecker);
     }
 
     /**

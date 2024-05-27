@@ -2,7 +2,7 @@
 
 namespace App\Tests\Application\Shared\Traits;
 
-use App\Infrastructure\Doctrine\DataFixtures\DoctrineUserFixtures;
+use App\Infrastructure\Doctrine\DataFixtures\User\DoctrineUserFixtures;
 use App\Infrastructure\Security\Model\SecurityUser;
 use App\Infrastructure\Security\Provider\SecurityUserProvider;
 

@@ -7,14 +7,13 @@ use App\Domain\User\Action\DeleteUserInput;
 use App\Domain\User\Action\EditUserInput;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Infrastructure\Admin\Field\EnumField;
-use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
-use App\Infrastructure\Doctrine\Model\DoctrineUser;
+use App\Infrastructure\Doctrine\Mapper\User\DoctrineUserMapper;
+use App\Infrastructure\Doctrine\Model\User\DoctrineUser;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Messenger\MessageBusInterface;
 

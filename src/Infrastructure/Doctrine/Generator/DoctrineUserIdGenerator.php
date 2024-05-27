@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Doctrine\Generator;
 
 use App\Domain\Shared\Service\Factory\UniqIDFactory;
-use App\Infrastructure\Doctrine\Model\DoctrineUser;
+use App\Infrastructure\Doctrine\Model\User\DoctrineUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AbstractIdGenerator;
 

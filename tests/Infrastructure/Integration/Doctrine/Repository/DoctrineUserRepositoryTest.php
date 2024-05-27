@@ -4,8 +4,8 @@ namespace App\Tests\Infrastructure\Integration\Doctrine\Repository;
 
 use App\Domain\User\Model\User;
 use App\Domain\User\Service\Factory\UserFactory;
-use App\Infrastructure\Doctrine\Model\DoctrineUser;
-use App\Infrastructure\Doctrine\Repository\DoctrineUserRepository;
+use App\Infrastructure\Doctrine\Model\User\DoctrineUser;
+use App\Infrastructure\Doctrine\Repository\User\DoctrineUserRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 
 class DoctrineUserRepositoryTest extends RepositoryKernelTestCase

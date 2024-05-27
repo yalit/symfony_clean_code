@@ -2,8 +2,7 @@
 
 namespace App\Tests\Application\Controller;
 
-use App\Domain\User\Repository\UserRepositoryInterface;
-use App\Infrastructure\Doctrine\DataFixtures\DoctrineUserFixtures;
+use App\Infrastructure\Doctrine\DataFixtures\User\DoctrineUserFixtures;
 use App\Tests\Application\Shared\Traits\WebSecurityTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

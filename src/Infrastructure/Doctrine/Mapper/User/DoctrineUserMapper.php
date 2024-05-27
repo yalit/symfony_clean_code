@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Infrastructure\Doctrine\Mapper;
+namespace App\Infrastructure\Doctrine\Mapper\User;
 
 use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Action\DeleteUserInput;
 use App\Domain\User\Action\EditUserInput;
 use App\Domain\User\Model\User;
-use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Infrastructure\Doctrine\Mapper\DoctrineMapperInterface;
-use App\Infrastructure\Doctrine\Model\DoctrineUser;
-use App\Infrastructure\Doctrine\Repository\DoctrineUserRepository;
+use App\Infrastructure\Doctrine\Model\User\DoctrineUser;
 
 class DoctrineUserMapper implements DoctrineMapperInterface
 {

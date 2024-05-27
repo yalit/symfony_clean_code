@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Infrastructure\Doctrine\Repository;
+namespace App\Infrastructure\Doctrine\Repository\User;
 
 use App\Domain\User\Model\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
-use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
-use App\Infrastructure\Doctrine\Model\DoctrineUser;
+use App\Infrastructure\Doctrine\Mapper\User\DoctrineUserMapper;
+use App\Infrastructure\Doctrine\Model\User\DoctrineUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;

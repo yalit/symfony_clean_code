@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Infrastructure\Doctrine\Model;
+namespace App\Infrastructure\Doctrine\Model\User;
 
 use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Action\EditUserInput;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Infrastructure\Doctrine\Generator\DoctrineUserIdGenerator;
-use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
-use App\Infrastructure\Doctrine\Repository\DoctrineUserRepository;
+use App\Infrastructure\Doctrine\Mapper\User\DoctrineUserMapper;
+use App\Infrastructure\Doctrine\Repository\User\DoctrineUserRepository;
 use App\Infrastructure\Validation\DomainSpecificationConstraint;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\CustomIdGenerator;
@@ -25,7 +25,6 @@ class DoctrineUser
 {
     #[Id]
     #[Column(type: 'string', length: 128)]
-    #[GeneratedValue(strategy: 'CUSTOM')]
     #[CustomIdGenerator(class: DoctrineUserIdGenerator::class)]
     private ?string $id = null;
 
