@@ -33,6 +33,12 @@ class DoctrineScoreCategoryRepository extends ServiceEntityRepository implements
         return $find ? $this->mappper->toDomainEntity($find) : null;
     }
 
+    public function getOneByName(string $name): ?ScoreCategory
+    {
+        $find = $this->findOneBy(['name' => $name]);
+        return $find ? $this->mappper->toDomainEntity($find) : null;
+    }
+
     public function getAll(): array
     {
         return array_map(fn(DoctrineScoreCategory $doctrineScoreCategory) => $this->mappper->toDomainEntity($doctrineScoreCategory), $this->findAll());

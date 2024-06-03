@@ -4,7 +4,7 @@ namespace App\Tests\Domain\Score\Action\ScoreCategory;
 
 use App\Domain\Score\Action\ScoreCategory\CreateScoreCategoryAction;
 use App\Domain\Score\Action\ScoreCategory\CreateScoreCategoryInput;
-use App\Domain\Score\Authorization\CreateScoreCategoryAuthorization;
+use App\Domain\Score\Authorization\ScoreCategory\CreateScoreCategoryAuthorization;
 use App\Domain\Score\Model\Enum\ScoreCategoryType;
 use App\Domain\Score\Repository\ScoreCategoryRepositoryInterface;
 use App\Domain\Shared\Exception\InvalidRequester;

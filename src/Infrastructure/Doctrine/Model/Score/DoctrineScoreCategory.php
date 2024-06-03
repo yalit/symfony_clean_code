@@ -24,7 +24,12 @@ class DoctrineScoreCategory
     private ScoreCategoryType $type;
 
     #[Column(type: 'string', length: 1028, nullable: true)]
-    private ?string $description;
+    private ?string $description = '';
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getId(): ?string
     {

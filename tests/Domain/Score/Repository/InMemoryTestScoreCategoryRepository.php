@@ -24,6 +24,17 @@ class InMemoryTestScoreCategoryRepository implements ScoreCategoryRepositoryInte
         return $this->categories[$id] ?? null;
     }
 
+    public function getOneByName(string $name): ?ScoreCategory
+    {
+        foreach ($this->categories as $category) {
+            if ($category->getName() === $name) {
+                return $category;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @inheritDoc
      */

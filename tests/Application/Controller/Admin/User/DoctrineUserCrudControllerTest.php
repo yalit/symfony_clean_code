@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Application\Controller\Admin;
+namespace App\Tests\Application\Controller\Admin\User;
 
-use App\Application\Controller\Admin\DoctrineUserCrudController;
+use App\Application\Controller\Admin\User\DoctrineUserCrudController;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\Service\PasswordHasherInterface;

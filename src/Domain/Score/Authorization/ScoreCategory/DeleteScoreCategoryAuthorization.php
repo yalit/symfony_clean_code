@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Domain\Score\Authorization;
+namespace App\Domain\Score\Authorization\ScoreCategory;
 
-use App\Domain\Score\Action\ScoreCategory\CreateScoreCategoryInput;
+use App\Domain\Score\Action\ScoreCategory\DeleteScoreCategoryInput;
+use App\Domain\Score\Action\ScoreCategory\UpdateScoreCategoryInput;
 use App\Domain\Shared\Authorization\AuthorizationInterface;
 use App\Domain\User\Model\Enum\UserRole;
 use App\Domain\User\Repository\UserRepositoryInterface;
 
-class CreateScoreCategoryAuthorization implements AuthorizationInterface
+class DeleteScoreCategoryAuthorization implements AuthorizationInterface
 {
-    public const AUTHORIZATION_ACTION = 'domain_create_score_category';
+    public const AUTHORIZATION_ACTION = 'domain_delete_score_category';
 
     public function __construct(private readonly UserRepositoryInterface $userRepository) {}
 
@@ -18,7 +19,7 @@ class CreateScoreCategoryAuthorization implements AuthorizationInterface
      */
     public function supports(string $action, $resource): bool
     {
-        return $action === self::AUTHORIZATION_ACTION && $resource instanceof CreateScoreCategoryInput;
+        return $action === self::AUTHORIZATION_ACTION && $resource instanceof DeleteScoreCategoryInput;
     }
 
     /**

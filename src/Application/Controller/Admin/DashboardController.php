@@ -2,6 +2,8 @@
 
 namespace App\Application\Controller\Admin;
 
+use App\Application\Controller\Admin\User\DoctrineUserCrudController;
+use App\Infrastructure\Doctrine\Model\Score\DoctrineScoreCategory;
 use App\Infrastructure\Doctrine\Model\User\DoctrineUser;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -29,7 +31,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToRoute('Back to the website', 'fa fa-home', 'index');
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('User', 'fa fa-user', DoctrineUser::class);
+        yield MenuItem::linkToCrud('Categories', 'fa fa-cog', DoctrineScoreCategory::class);
     }
 }

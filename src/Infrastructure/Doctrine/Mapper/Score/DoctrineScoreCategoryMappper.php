@@ -2,6 +2,9 @@
 
 namespace App\Infrastructure\Doctrine\Mapper\Score;
 
+use App\Domain\Score\Action\ScoreCategory\CreateScoreCategoryInput;
+use App\Domain\Score\Action\ScoreCategory\DeleteScoreCategoryInput;
+use App\Domain\Score\Action\ScoreCategory\UpdateScoreCategoryInput;
 use App\Domain\Score\Model\ScoreCategory;
 use App\Infrastructure\Doctrine\Mapper\DoctrineMapperInterface;
 use App\Infrastructure\Doctrine\Model\Score\DoctrineScoreCategory;
@@ -48,6 +51,22 @@ class DoctrineScoreCategoryMappper implements DoctrineMapperInterface
      */
     public function toDomainDto($entity, string $dtoClassName)
     {
-        throw new \Exception('Not implemented');
+        return match ($dtoClassName) {
+            CreateScoreCategoryInput::class => new CreateScoreCategoryInput(
+                $entity->getName(),
+                $entity->getType(),
+                $entity->getDescription(),
+            ),
+            UpdateScoreCategoryInput::class => new UpdateScoreCategoryInput(
+                $this->toDomainEntity($entity),
+                $entity->getName(),
+                $entity->getType(),
+                $entity->getDescription(),
+            ),
+            DeleteScoreCategoryInput::class => new DeleteScoreCategoryInput(
+                $this->toDomainEntity($entity),
+            ),
+            default => throw new \InvalidArgumentException("Unsupported DTO class name: $dtoClassName"),
+        };
     }
 }

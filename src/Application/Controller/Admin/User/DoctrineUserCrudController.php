@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Controller\Admin;
+namespace App\Application\Controller\Admin\User;
 
 use App\Domain\User\Action\CreateUserInput;
 use App\Domain\User\Action\DeleteUserInput;

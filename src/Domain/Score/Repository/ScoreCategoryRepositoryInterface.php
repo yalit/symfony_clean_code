@@ -8,4 +8,7 @@ use App\Domain\Shared\Repository\DomainRepositoryInterface;
 /**
  * @template-extends DomainRepositoryInterface<ScoreCategory>
  */
-interface ScoreCategoryRepositoryInterface extends DomainRepositoryInterface {}
+interface ScoreCategoryRepositoryInterface extends DomainRepositoryInterface
+{
+    public function getOneByName(string $name): ?ScoreCategory;
+}
