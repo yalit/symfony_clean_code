@@ -6,21 +6,26 @@ use DateTimeImmutable;
 
 class Score
 {
+    private readonly DateTimeImmutable $createdAt;
+    private DateTimeImmutable $updatedAt;
+
     public function __construct(
         private readonly string   $id,
         private string            $title,
-        private string            $description,
+        private string            $description = '',
         /** @var ScoreIdentification[] */
-        private array             $identifications,
+        private array             $identifications = [],
         /** @var Composer[] */
-        private array             $composers,
+        private array             $composers = [],
         /** @var ScoreCategory[] */
-        private array             $categories,
+        private array             $categories = [],
         /** @var ScoreFile[] */
-        private array             $scoreFiles,
-        private readonly DateTimeImmutable $createdAt,
-        private DateTimeImmutable $updatedAt,
-    ) {}
+        private array             $scoreFiles = [],
+    ) {
+        $createdAt = new DateTimeImmutable();
+        $this->updatedAt = $createdAt;
+        $this->createdAt = $createdAt;
+    }
 
     public function getTitle(): string
     {
@@ -68,6 +73,12 @@ class Score
         return $this->identifications;
     }
 
+    /** @param ScoreIdentification[] $identifications */
+    public function setIdentifications(array $identifications): void
+    {
+        $this->identifications = $identifications;
+    }
+
     public function addIdentification(ScoreIdentification $identification): void
     {
         if (!array_key_exists($identification->getId(), $this->identifications)) {
@@ -86,6 +97,12 @@ class Score
     public function getComposers(): array
     {
         return $this->composers;
+    }
+
+    /** @param Composer[] $composers */
+    public function setComposers(array $composers): void
+    {
+        $this->composers = $composers;
     }
 
     public function addComposer(Composer $composer): void
@@ -107,6 +124,13 @@ class Score
     {
         return $this->categories;
     }
+
+    /** @param ScoreCategory[] $categories */
+    public function setCategories(array $categories): void
+    {
+        $this->categories = $categories;
+    }
+
     public function addCategory(ScoreCategory $category): void
     {
         if (!array_key_exists($category->getId(), $this->categories)) {
@@ -125,6 +149,12 @@ class Score
     public function getScoreFiles(): array
     {
         return $this->scoreFiles;
+    }
+
+    /** @param ScoreFile[] $scoreFiles */
+    public function setScoreFiles(array $scoreFiles): void
+    {
+        $this->scoreFiles = $scoreFiles;
     }
 
     public function addScoreFile(ScoreFile $scoreFile): void

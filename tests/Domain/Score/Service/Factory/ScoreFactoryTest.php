@@ -9,6 +9,7 @@ use App\Domain\Score\Service\Factory\ScoreCategoryFactory;
 use App\Domain\Score\Service\Factory\ScoreFactory;
 use App\Domain\Score\Service\Factory\ScoreFileFactory;
 use App\Domain\Score\Service\Factory\ScoreIdentificationFactory;
+use App\Tests\Domain\Score\Fixtures\DomainTestScoreFileFixtures;
 use PHPUnit\Framework\TestCase;
 
 class ScoreFactoryTest extends TestCase
@@ -19,7 +20,7 @@ class ScoreFactoryTest extends TestCase
         $scoreCategory = ScoreCategoryFactory::create('Score Category', ScoreCategoryType::SCORE);
         $idCategory = ScoreCategoryFactory::create('Identification Category', ScoreCategoryType::IDENTIFICATION);
         $identification = ScoreIdentificationFactory::create('T-123', $idCategory);
-        $file = ScoreFileFactory::create(__DIR__ . '/../../../Shared/File/testFile.txt');
+        $file = ScoreFileFactory::create(DomainTestScoreFileFixtures::TEST_FILE_PATH);
 
         $score = ScoreFactory::create(
             'Score title',

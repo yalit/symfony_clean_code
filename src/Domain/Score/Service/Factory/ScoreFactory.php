@@ -20,23 +20,20 @@ class ScoreFactory
      */
     public static function create(
         string $title,
-        string $description,
+        ?string $description = null,
         array $identifications = [],
         array $composers = [],
         array $categories = [],
         array $scoreFiles = [],
     ): Score {
-        $date = new DateTimeImmutable();
         return new Score(
             id: UniqIDFactory::create("score_"),
             title: $title,
-            description: $description,
+            description: $description ?? '',
             identifications: $identifications,
             composers: $composers,
             categories: $categories,
             scoreFiles: $scoreFiles,
-            createdAt: $date,
-            updatedAt: $date,
         );
     }
 }

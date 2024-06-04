@@ -7,8 +7,10 @@ use App\Domain\Score\Model\Enum\ScoreCategoryType;
 use App\Domain\Score\Model\ScoreCategory;
 use App\Domain\Score\Model\ScoreFile;
 use App\Domain\Score\Model\ScoreIdentification;
+use App\Domain\Score\Rule\ScoreCategories;
 use App\Domain\Shared\Action\ActionInput;
 
+#[ScoreCategories]
 class CreateScoreInput implements ActionInput
 {
     /**
@@ -19,7 +21,7 @@ class CreateScoreInput implements ActionInput
      */
     public function __construct(
         private readonly string $title,
-        private readonly string $description,
+        private readonly ?string $description = null,
         private readonly array $categories = [],
         private readonly array $composers = [],
         private readonly array $identifications = [],
@@ -31,7 +33,7 @@ class CreateScoreInput implements ActionInput
         return $this->title;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
