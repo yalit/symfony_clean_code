@@ -21,10 +21,10 @@ class ScoreFactory
     public static function create(
         string $title,
         string $description,
-        array $identifications,
-        array $composers,
-        array $categories,
-        array $scoreFiles,
+        array $identifications = [],
+        array $composers = [],
+        array $categories = [],
+        array $scoreFiles = [],
     ): Score {
         $date = new DateTimeImmutable();
         return new Score(

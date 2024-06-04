@@ -2,9 +2,7 @@
 
 namespace App\Domain\Score\Action\ScoreCategory;
 
-use App\Domain\Score\Model\Enum\ScoreCategoryType;
 use App\Domain\Score\Model\ScoreCategory;
-use App\Domain\Score\Rule\NotBlankName;
 use App\Domain\Shared\Action\ActionInput;
 
 class DeleteScoreCategoryInput implements ActionInput

@@ -4,15 +4,9 @@ namespace App\Tests\Domain\Score\Action\ScoreCategory;
 
 use App\Domain\Score\Action\ScoreCategory\DeleteScoreCategoryAction;
 use App\Domain\Score\Action\ScoreCategory\DeleteScoreCategoryInput;
-use App\Domain\Score\Action\ScoreCategory\UpdateScoreCategoryAction;
-use App\Domain\Score\Action\ScoreCategory\UpdateScoreCategoryInput;
 use App\Domain\Score\Authorization\ScoreCategory\DeleteScoreCategoryAuthorization;
-use App\Domain\Score\Authorization\ScoreCategory\UpdateScoreCategoryAuthorization;
-use App\Domain\Score\Model\Enum\ScoreCategoryType;
 use App\Domain\Score\Repository\ScoreCategoryRepositoryInterface;
-use App\Domain\Score\Rule\NotBlankNameValidator;
 use App\Domain\Shared\Exception\InvalidRequester;
-use App\Domain\Shared\Validation\Exception\ValidationException;
 use App\Domain\Shared\Validation\Validator;
 use App\Tests\Domain\Score\Fixtures\DomainTestCategoryFixtures;
 use App\Tests\Domain\Score\Repository\InMemoryTestScoreCategoryRepository;

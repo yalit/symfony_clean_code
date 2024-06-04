@@ -7,8 +7,8 @@ use App\Domain\Score\Action\ScoreCategory\UpdateScoreCategoryInput;
 use App\Domain\Score\Authorization\ScoreCategory\UpdateScoreCategoryAuthorization;
 use App\Domain\Score\Model\Enum\ScoreCategoryType;
 use App\Domain\Score\Repository\ScoreCategoryRepositoryInterface;
-use App\Domain\Score\Rule\NotBlankNameValidator;
 use App\Domain\Shared\Exception\InvalidRequester;
+use App\Domain\Shared\Rule\NotBlankPropertyValidator;
 use App\Domain\Shared\Validation\Exception\ValidationException;
 use App\Domain\Shared\Validation\Validator;
 use App\Tests\Domain\Score\Fixtures\DomainTestCategoryFixtures;
@@ -30,7 +30,7 @@ class UpdateScoreCategoryActionTest extends DomainActionTestCase
         $fixturesLoader->load();
 
         $this->setCurrentUser();
-        $this->serviceFetcher->addService(NotBlankNameValidator::class, new NotBlankNameValidator());
+        $this->serviceFetcher->addService(NotBlankPropertyValidator::class, new NotBlankPropertyValidator());
     }
 
     protected function tearDown(): void
