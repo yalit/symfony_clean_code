@@ -3,15 +3,17 @@
 namespace App\Domain\Score\Authorization\ScoreCategory;
 
 use App\Domain\Score\Action\ScoreCategory\UpdateScoreCategoryInput;
-use App\Domain\Shared\Authorization\AuthorizationInterface;
-use App\Domain\User\Model\Enum\UserRole;
+use App\Domain\Shared\Authorization\AbstractAdminAuthorization;
 use App\Domain\User\Repository\UserRepositoryInterface;
 
-class UpdateScoreCategoryAuthorization implements AuthorizationInterface
+class UpdateScoreCategoryAuthorization extends AbstractAdminAuthorization
 {
     public const AUTHORIZATION_ACTION = 'domain_update_score_category';
 
-    public function __construct(private readonly UserRepositoryInterface $userRepository) {}
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        parent::__construct($userRepository);
+    }
 
     /**
      * @inheritDoc
@@ -21,17 +23,8 @@ class UpdateScoreCategoryAuthorization implements AuthorizationInterface
         return $action === self::AUTHORIZATION_ACTION && $resource instanceof UpdateScoreCategoryInput;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function allows(string $action, $resource): bool
+    protected function allowsNonAdmin(string $action, $resource): bool
     {
-        $currentUser = $this->userRepository->getCurrentUser();
-
-        if (!$currentUser) {
-            return false;
-        }
-
-        return $currentUser->getRole() === UserRole::ADMIN;
+        return false;
     }
 }
